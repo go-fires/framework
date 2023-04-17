@@ -2,6 +2,7 @@ package container
 
 import (
 	"fmt"
+	"github.com/go-fires/framework/contracts/container"
 	"reflect"
 	"sync"
 )
@@ -20,6 +21,8 @@ type Container struct {
 
 	mu sync.Mutex
 }
+
+var _ container.Container = (*Container)(nil)
 
 func NewContainer() *Container {
 	return &Container{
