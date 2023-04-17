@@ -17,6 +17,8 @@ func (r *record) isExpired() bool {
 
 type MemoryStore struct {
 	records *sync.Map
+
+	mu sync.Mutex
 }
 
 func NewMemoryStore() *MemoryStore {
@@ -53,6 +55,9 @@ func (m *MemoryStore) Put(key string, value interface{}, expired time.Time) bool
 }
 
 func (m *MemoryStore) Increment(key string, value int) int {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
 	if v, ok := m.records.Load(key); ok {
 		if !v.(*record).isExpired() {
 			if _, ok := v.(*record).value.(int); ok {

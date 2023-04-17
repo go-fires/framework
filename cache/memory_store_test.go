@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"github.com/go-fires/framework/support/int"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -78,4 +79,19 @@ func BenchmarkMemoryStore_PutAndGet(b *testing.B) {
 			m.Forget("foo")
 		}
 	})
+}
+
+func BenchmarkMemoryStore_Incr(b *testing.B) {
+	m := NewMemoryStore()
+
+	counter := &int.Counter{}
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			m.Increment("foo", 1)
+			counter.Inc(1)
+		}
+	})
+
+	assert.Equal(b, counter.Val(), m.Get("foo"))
 }
