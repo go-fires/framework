@@ -57,9 +57,6 @@ func (c *Container) Instance(name string, instance interface{}) {
 	c.instances[name] = instance
 }
 func (c *Container) resolve(name string, value interface{}) error {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
 	// if an instance of the type is currently being managed as a shared
 	if instance, ok := c.instances[name]; ok {
 		return c.value(instance, value)
@@ -76,7 +73,11 @@ func (c *Container) resolve(name string, value interface{}) error {
 
 	// if the concrete type is shared
 	if binding.shared {
+		c.mu.Lock()
+		defer c.mu.Unlock()
+
 		c.instances[name] = concrete
+
 		return c.value(concrete, value)
 	}
 
