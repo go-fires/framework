@@ -19,10 +19,20 @@ type Application struct {
 var _ foundation.Application = (*Application)(nil)
 
 func NewApplication() *Application {
-	return &Application{
+	app := &Application{
 		Container: container.NewContainer(),
 		providers: make([]foundation.Provider, 10),
 	}
+
+	app.init()
+
+	return app
+}
+
+func (a *Application) init() {
+	a.Container.Instance("app", a)
+
+	SetInstance(a)
 }
 
 func (a *Application) Version() string {
