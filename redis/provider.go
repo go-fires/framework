@@ -2,7 +2,7 @@ package redis
 
 import (
 	"github.com/go-fires/framework/config"
-	"github.com/go-fires/framework/container"
+	"github.com/go-fires/framework/contracts/container"
 	"github.com/go-fires/framework/contracts/foundation"
 	"github.com/redis/go-redis/v9"
 )
@@ -10,20 +10,21 @@ import (
 const Redis = "redis"
 
 type Provider struct {
-	*container.Container
+	container.Container
+
 	*foundation.UnimplementedProvider
 }
 
 var _ foundation.Provider = (*Provider)(nil)
 
-func NewProvider(c *container.Container) *Provider {
+func NewProvider(c container.Container) *Provider {
 	return &Provider{
 		Container: c,
 	}
 }
 
 func (r *Provider) Register() {
-	r.Singleton(Redis, func(c *container.Container) interface{} {
+	r.Singleton(Redis, func(c container.Container) interface{} {
 		if cfg, ok := r.getConfig().Get("redis").(*Config); ok {
 			return New(cfg)
 		}

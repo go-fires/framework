@@ -2,7 +2,7 @@ package encryption
 
 import (
 	"encoding/base64"
-	"github.com/go-fires/framework/container"
+	"github.com/go-fires/framework/contracts/container"
 	"github.com/go-fires/framework/contracts/foundation"
 	"strings"
 )
@@ -10,20 +10,20 @@ import (
 const EncrypterName = "encrypter"
 
 type Provider struct {
-	*container.Container
+	container.Container
 	*foundation.UnimplementedProvider
 }
 
 var _ foundation.Provider = (*Provider)(nil)
 
-func NewProvider(c *container.Container) *Provider {
+func NewProvider(c container.Container) *Provider {
 	return &Provider{
 		Container: c,
 	}
 }
 
 func (e *Provider) Register() {
-	e.Singleton(EncrypterName, func(c *container.Container) interface{} {
+	e.Singleton(EncrypterName, func(c container.Container) interface{} {
 		return NewEncrypter(e.parseKey("base64:4IgTbtwvozDVo4DTaTEZME8n64yLSjAvdB+VkIj/OsA=")) // TODO: get key from config
 	})
 }

@@ -2,13 +2,13 @@ package foundation
 
 import (
 	"fmt"
-	"github.com/go-fires/framework/container"
+	"github.com/go-fires/framework/contracts/container"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 type testProvider struct {
-	*container.Container
+	container.Container
 }
 
 type testService struct {
@@ -16,7 +16,7 @@ type testService struct {
 }
 
 func (t *testProvider) Register() {
-	t.Singleton("test", func(c *container.Container) interface{} {
+	t.Singleton("test", func(c container.Container) interface{} {
 		return &testService{
 			Name: "test name",
 		}

@@ -1,6 +1,7 @@
 package container
 
 import (
+	"github.com/go-fires/framework/contracts/container"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -75,7 +76,7 @@ func TestContainer_Bind(t *testing.T) {
 	c := NewContainer()
 
 	// shared
-	c.Bind("shared", func(container *Container) interface{} {
+	c.Bind("shared", func(c container.Container) interface{} {
 		return NewA("shared")
 	}, true)
 
@@ -89,7 +90,7 @@ func TestContainer_Bind(t *testing.T) {
 	assert.Same(t, shared, shared2)
 
 	// not shared
-	c.Bind("not_shared", func(container *Container) interface{} {
+	c.Bind("not_shared", func(c container.Container) interface{} {
 		return NewA("not_shared")
 	}, false)
 
@@ -105,7 +106,7 @@ func TestContainer_Bind(t *testing.T) {
 func TestContainer_Singleton(t *testing.T) {
 	c := NewContainer()
 
-	c.Singleton("singleton", func(container *Container) interface{} {
+	c.Singleton("singleton", func(c container.Container) interface{} {
 		return NewA("singleton")
 	})
 
@@ -122,11 +123,11 @@ func TestContainer_Singleton(t *testing.T) {
 func TestContainer_Make(t *testing.T) {
 	c := NewContainer()
 
-	c.Bind("aa", func(container *Container) interface{} {
+	c.Bind("aa", func(c container.Container) interface{} {
 		return NewA("aa")
 	}, true)
 
-	c.Bind("bb", func(container *Container) interface{} {
+	c.Bind("bb", func(c container.Container) interface{} {
 		return NewA("bb")
 	}, false)
 
@@ -141,11 +142,11 @@ func TestContainer_Make(t *testing.T) {
 func BenchmarkContainer(b *testing.B) {
 	c := NewContainer()
 
-	c.Bind("aa", func(container *Container) interface{} {
+	c.Bind("aa", func(c container.Container) interface{} {
 		return NewA("aa")
 	}, true)
 
-	c.Bind("bb", func(container *Container) interface{} {
+	c.Bind("bb", func(c container.Container) interface{} {
 		return NewA("bb")
 	}, false)
 
