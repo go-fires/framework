@@ -8,7 +8,7 @@ import (
 type Manager struct {
 	config   *Config
 	resolved map[string]redis.Cmdable
-	rw       sync.RWMutex
+	mu       sync.Mutex
 }
 
 type Opts func(*Manager) *Manager
@@ -38,12 +38,12 @@ func (m *Manager) Connect(name ...string) redis.Cmdable {
 
 // resolve client.
 func (m *Manager) resolve(name string) redis.Cmdable {
-	m.rw.Lock()
-	defer m.rw.Unlock()
-
 	if rdb, ok := m.resolved[name]; ok {
 		return rdb
 	}
+
+	m.mu.Lock()
+	defer m.mu.Unlock()
 
 	if _, ok := m.config.Connections[name]; !ok {
 		panic("connection " + name + " is not defined")
