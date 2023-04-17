@@ -7,11 +7,9 @@ import (
 	"sync"
 )
 
-type Concrete func(container *Container) interface{}
-
 type binding struct {
 	name     string
-	concrete Concrete
+	concrete container.Concrete
 	shared   bool
 }
 
@@ -31,7 +29,7 @@ func NewContainer() *Container {
 	}
 }
 
-func (c *Container) Bind(name string, concrete Concrete, shared bool) {
+func (c *Container) Bind(name string, concrete container.Concrete, shared bool) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -42,7 +40,7 @@ func (c *Container) Bind(name string, concrete Concrete, shared bool) {
 	}
 }
 
-func (c *Container) Singleton(name string, concrete Concrete) {
+func (c *Container) Singleton(name string, concrete container.Concrete) {
 	c.Bind(name, concrete, true)
 }
 
