@@ -39,9 +39,10 @@ func TestMemoryStore_Forever(t *testing.T) {
 	assert.True(t, m.Forever("foo", "bar"))
 	assert.Equal(t, "bar", m.Get("foo").(string))
 
-	for _, r := range m.getRecords() {
-		assert.Equal(t, time.Time{}, r.expired)
-	}
+	m.records.Range(func(key, value interface{}) bool {
+		assert.Equal(t, time.Time{}, value.(*record).expired)
+		return true
+	})
 }
 
 func TestMemoryStore_Forget(t *testing.T) {
@@ -60,10 +61,10 @@ func TestMemoryStore_Flush(t *testing.T) {
 
 	m.Put("foo", "bar", time.Now().Add(time.Second*1))
 	m.Put("foo2", "bar2", time.Now().Add(time.Second*1))
-	assert.Equal(t, 2, len(m.getRecords()))
+	assert.Equal(t, 2, m.Length())
 
 	assert.True(t, m.Flush())
-	assert.Equal(t, 0, len(m.getRecords()))
+	assert.Equal(t, 0, m.Length())
 }
 
 func BenchmarkMemoryStore_PutAndGet(b *testing.B) {

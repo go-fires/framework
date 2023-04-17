@@ -16,14 +16,12 @@ func (r *record) isExpired() bool {
 }
 
 type MemoryStore struct {
-	records map[string]*record
-
-	rw sync.RWMutex
+	records *sync.Map
 }
 
 func NewMemoryStore() *MemoryStore {
 	m := &MemoryStore{
-		records: make(map[string]*record, 1024),
+		records: &sync.Map{},
 	}
 
 	go m.lrucache()
@@ -34,14 +32,11 @@ func NewMemoryStore() *MemoryStore {
 var _ cache.Store = (*MemoryStore)(nil)
 
 func (m *MemoryStore) Get(key string) interface{} {
-	m.rw.RLock()
-	defer m.rw.RUnlock()
-
-	if v, ok := m.records[key]; ok {
-		if !v.isExpired() {
-			return v.value
+	if v, ok := m.records.Load(key); ok {
+		if !v.(*record).isExpired() {
+			return v.(*record).value
 		} else {
-			delete(m.records, key)
+			m.records.Delete(key)
 		}
 	}
 
@@ -49,32 +44,26 @@ func (m *MemoryStore) Get(key string) interface{} {
 }
 
 func (m *MemoryStore) Put(key string, value interface{}, expired time.Time) bool {
-	m.rw.Lock()
-	defer m.rw.Unlock()
-
-	m.records[key] = &record{
+	m.records.Store(key, &record{
 		value:   value,
 		expired: expired,
-	}
+	})
 
 	return true
 }
 
 func (m *MemoryStore) Increment(key string, value int) int {
-	m.rw.RLock()
-	defer m.rw.RUnlock()
-
-	if v, ok := m.records[key]; ok {
-		if !v.isExpired() {
-			if _, ok := v.value.(int); ok {
-				v.value = v.value.(int) + value
+	if v, ok := m.records.Load(key); ok {
+		if !v.(*record).isExpired() {
+			if _, ok := v.(*record).value.(int); ok {
+				v.(*record).value = v.(*record).value.(int) + value
 			} else {
-				v.value = value
+				v.(*record).value = value
 			}
 
-			return v.value.(int)
+			return v.(*record).value.(int)
 		} else {
-			delete(m.records, key)
+			m.records.Delete(key)
 		}
 	}
 
@@ -92,12 +81,8 @@ func (m *MemoryStore) Forever(key string, value interface{}) bool {
 }
 
 func (m *MemoryStore) Forget(key string) bool {
-	m.rw.Lock()
-	defer m.rw.Unlock()
-
-	if _, ok := m.records[key]; ok {
-		delete(m.records, key)
-
+	if _, ok := m.records.Load(key); ok {
+		m.records.Delete(key)
 		return true
 	}
 
@@ -105,16 +90,13 @@ func (m *MemoryStore) Forget(key string) bool {
 }
 
 func (m *MemoryStore) Flush() bool {
-	m.rw.Lock()
-	defer m.rw.Unlock()
-
-	m.records = make(map[string]*record, 1024)
+	m.records = &sync.Map{}
 
 	return true
 }
 
 func (m *MemoryStore) Has(key string) bool {
-	if _, ok := m.records[key]; ok {
+	if _, ok := m.records.Load(key); ok {
 		return true
 	}
 
@@ -129,15 +111,27 @@ func (m *MemoryStore) lrucache() {
 	for {
 		select {
 		case <-time.Tick(time.Minute):
-			for k, v := range m.getRecords() {
-				if v.isExpired() {
-					m.Forget(k)
+			m.records.Range(func(key, value interface{}) bool {
+				if value.(*record).isExpired() {
+					m.Forget(key.(string))
 				}
-			}
+
+				return true
+			})
 		}
 	}
 }
 
-func (m *MemoryStore) getRecords() map[string]*record {
-	return m.records
+// Length returns the number of items in the cache.
+// This is slow, so it should only be used for debugging.
+func (m *MemoryStore) Length() int {
+	var length int
+
+	m.records.Range(func(key, value interface{}) bool {
+		length++
+
+		return true
+	})
+
+	return length
 }
