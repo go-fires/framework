@@ -35,8 +35,12 @@ func NewMemoryStore() *MemoryStore {
 var _ cache.Store = (*MemoryStore)(nil)
 
 func (m *MemoryStore) Has(key string) bool {
-	if _, ok := m.records.Load(key); ok {
-		return true
+	if v, ok := m.records.Load(key); ok {
+		if !v.(*record).isExpired() {
+			return true
+		} else {
+			m.records.Delete(key)
+		}
 	}
 
 	return false

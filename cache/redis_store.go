@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/go-fires/framework/contracts/cache"
 	"github.com/go-fires/framework/contracts/support"
-	"github.com/go-fires/framework/support/helper"
 	"github.com/go-fires/framework/support/serializer"
 	"github.com/redis/go-redis/v9"
 	"time"
@@ -99,7 +98,7 @@ func (r *RedisStore) Pull(key string, value interface{}) error {
 	if result := r.redis.GetDel(ctx, r.prefix+key); result.Err() != nil {
 		return result.Err()
 	} else {
-		return helper.ValueOf(result.Val(), value)
+		return r.unserialize(result.Val(), value)
 	}
 }
 
@@ -116,7 +115,12 @@ func (r *RedisStore) Forget(key string) bool {
 }
 
 func (r *RedisStore) Add(key string, value interface{}, ttl time.Duration) bool {
-	if result := r.redis.SetNX(ctx, r.prefix+key, value, ttl); result.Err() != nil {
+	serialized, err := r.serialize(value)
+	if err != nil {
+		return false
+	}
+
+	if result := r.redis.SetNX(ctx, r.prefix+key, serialized, ttl); result.Err() != nil {
 		return false
 	} else {
 		return result.Val()
