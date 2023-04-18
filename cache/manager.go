@@ -2,7 +2,6 @@ package cache
 
 import (
 	"github.com/go-fires/framework/contracts/cache"
-	"github.com/go-fires/framework/facade"
 	"sync"
 )
 
@@ -72,13 +71,15 @@ func (m *Manager) createMemoryStore(config *MemoryStoreConfig) cache.Repository 
 }
 
 func (m *Manager) createRedisStore(config *RedisStoreConfig) cache.Repository {
-	return m.repository(
-		NewRedisStore(
-			facade.Redis().Connect(config.GetConnection()),
-			WithRedisStorePrefix(config.GetPrefix()),
-			WithRedisStoreSerializable(config.GetSerializer()),
-		),
-	)
+	// return m.repository(
+	// 	NewRedisStore(
+	//
+	// 		// m.app.(config.GetConnection()),
+	// 		WithRedisStorePrefix(config.GetPrefix()),
+	// 		WithRedisStoreSerializable(config.GetSerializer()),
+	// 	),
+	// )
+	return nil
 }
 
 func (m *Manager) repository(store cache.Store) cache.Repository {

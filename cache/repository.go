@@ -75,11 +75,9 @@ func (r *Repository) Remember(key string, value interface{}, ttl time.Duration, 
 		return nil
 	}
 
-	val := callback()
-
-	r.Set(key, val, ttl)
-
-	return helper.ValueOf(val, value)
+	return helper.ValueOf(helper.Tap(callback(), func(value interface{}) {
+		r.Set(key, value, ttl)
+	}), value)
 }
 
 func (r *Repository) RememberForever(key string, value interface{}, callback func() interface{}) error {
