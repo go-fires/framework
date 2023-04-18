@@ -2,6 +2,7 @@ package cache
 
 import (
 	"github.com/go-fires/framework/contracts/cache"
+	"github.com/redis/go-redis/v9"
 	"sync"
 )
 
@@ -67,19 +68,21 @@ func (m *Manager) resolve(name string) cache.Repository {
 }
 
 func (m *Manager) createMemoryStore(config *MemoryStoreConfig) cache.Repository {
-	return m.repository(NewMemoryStore())
+	return m.repository(NewMemoryStore(config))
 }
 
 func (m *Manager) createRedisStore(config *RedisStoreConfig) cache.Repository {
-	// return m.repository(
-	// 	NewRedisStore(
-	//
-	// 		// m.app.(config.GetConnection()),
-	// 		WithRedisStorePrefix(config.GetPrefix()),
-	// 		WithRedisStoreSerializable(config.GetSerializer()),
-	// 	),
-	// )
-	return nil
+	return m.repository(
+		NewRedisStore(
+			// todo transport to config
+			redis.NewClient(&redis.Options{
+				Addr: "localhost:6379",
+			}),
+			// m.app.(config.GetConnection()),
+			WithRedisStorePrefix(config.GetPrefix()),
+			WithRedisStoreSerializable(config.GetSerializer()),
+		),
+	)
 }
 
 func (m *Manager) repository(store cache.Store) cache.Repository {

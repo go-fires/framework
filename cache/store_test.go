@@ -9,7 +9,9 @@ import (
 )
 
 func createMemoryStore() *MemoryStore {
-	return NewMemoryStore()
+	return NewMemoryStore(&MemoryStoreConfig{
+		LruTick: time.Minute * 1,
+	})
 }
 
 func createRedisStore() *RedisStore {
