@@ -5,6 +5,7 @@ import (
 	"github.com/go-fires/framework/contracts/cache"
 	"github.com/go-fires/framework/contracts/support"
 	"github.com/go-fires/framework/support/helper"
+	"github.com/go-fires/framework/support/serializer"
 	"github.com/redis/go-redis/v9"
 	"time"
 )
@@ -26,7 +27,8 @@ type RedisStoreOption func(*RedisStore)
 
 func NewRedisStore(redis redis.Cmdable, opts ...RedisStoreOption) *RedisStore {
 	r := &RedisStore{
-		redis: redis,
+		redis:        redis,
+		serializable: &serializer.JsonSerializer{}, // default serializer
 	}
 
 	for _, opt := range opts {
@@ -60,12 +62,17 @@ func (r *RedisStore) Get(key string, value interface{}) error {
 	if result := r.redis.Get(ctx, r.prefix+key); result.Err() != nil {
 		return result.Err()
 	} else {
-		return r.serializable.Unserialize([]byte(result.Val()), value)
+		return r.unserialize(result.Val(), value)
 	}
 }
 
 func (r *RedisStore) Put(key string, value interface{}, ttl time.Duration) bool {
-	if result := r.redis.Set(ctx, r.prefix+key, value, ttl); result.Err() != nil {
+	serialized, err := r.serialize(value)
+	if err != nil {
+		return false
+	}
+
+	if result := r.redis.Set(ctx, r.prefix+key, serialized, ttl); result.Err() != nil {
 		return false
 	} else {
 		return true
@@ -104,7 +111,7 @@ func (r *RedisStore) Forget(key string) bool {
 	if result := r.redis.Del(ctx, r.prefix+key); result.Err() != nil {
 		return false
 	} else {
-		return true
+		return result.Val() > 0
 	}
 }
 
@@ -134,4 +141,16 @@ func (r *RedisStore) SetPrefix(prefix string) {
 
 func (r *RedisStore) GetPrefix() string {
 	return r.prefix
+}
+
+func (r *RedisStore) serialize(value interface{}) (string, error) {
+	if result, err := r.serializable.Serialize(value); err != nil {
+		return "", err
+	} else {
+		return string(result), nil
+	}
+}
+
+func (r *RedisStore) unserialize(value string, dest interface{}) error {
+	return r.serializable.Unserialize([]byte(value), dest)
 }

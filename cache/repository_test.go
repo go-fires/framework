@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"github.com/go-fires/framework/contracts/cache"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -19,13 +20,25 @@ func TestRespository_Base(t *testing.T) {
 }
 
 func TestRespository_Pull(t *testing.T) {
-	r := NewRespository(NewMemoryStore())
+	tests := []struct {
+		name  string
+		store cache.Store
+	}{
+		{"redis", createMemoryStore()},
+		{"memory", createRedisStore()},
+	}
 
-	var foo string
-	r.Put("foo", "bar", time.Second*1)
-	assert.Nil(t, r.Pull("foo", &foo))
-	assert.Equal(t, "bar", foo)
-	assert.False(t, r.Has("foo"))
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := NewRespository(tt.store)
+
+			var foo string
+			r.Put("foo", "bar", time.Second*1)
+			assert.Nil(t, r.Pull("foo", &foo))
+			assert.Equal(t, "bar", foo)
+			assert.False(t, r.Has("foo"))
+		})
+	}
 }
 
 func TestRespository_Set(t *testing.T) {

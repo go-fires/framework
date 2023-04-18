@@ -74,11 +74,11 @@ func (m *MemoryStore) Increment(key string, value int) int {
 		if !v.(*record).isExpired() {
 			if _, ok := v.(*record).value.(int); ok {
 				v.(*record).value = v.(*record).value.(int) + value
-			} else {
-				v.(*record).value = value
-			}
 
-			return v.(*record).value.(int)
+				return v.(*record).value.(int)
+			} else {
+				return 0 // not int
+			}
 		} else {
 			m.records.Delete(key)
 		}
