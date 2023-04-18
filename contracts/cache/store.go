@@ -5,7 +5,7 @@ import "time"
 type Store interface {
 	Get(key string) interface{}
 
-	Put(key string, value interface{}, expired time.Time) bool
+	Put(key string, value interface{}, ttl time.Duration) bool
 
 	Increment(key string, value int) int
 
@@ -17,7 +17,9 @@ type Store interface {
 
 	Flush() bool
 
-	Has(key string) bool
-
 	GetPrefix() string
+}
+
+type StoreAddable interface {
+	Add(key string, value interface{}, ttl time.Duration) bool
 }

@@ -33,6 +33,7 @@ func NewMemoryStore() *MemoryStore {
 
 var _ cache.Store = (*MemoryStore)(nil)
 
+// Get gets a value from the cache.
 func (m *MemoryStore) Get(key string) interface{} {
 	if v, ok := m.records.Load(key); ok {
 		if !v.(*record).isExpired() {
@@ -45,15 +46,17 @@ func (m *MemoryStore) Get(key string) interface{} {
 	return nil
 }
 
-func (m *MemoryStore) Put(key string, value interface{}, expired time.Time) bool {
+// Put puts a value into the cache for a given number of minutes.
+func (m *MemoryStore) Put(key string, value interface{}, ttl time.Duration) bool {
 	m.records.Store(key, &record{
 		value:   value,
-		expired: expired,
+		expired: time.Now().Add(ttl),
 	})
 
 	return true
 }
 
+// Increment increments the value of an item in the cache.
 func (m *MemoryStore) Increment(key string, value int) int {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -72,19 +75,22 @@ func (m *MemoryStore) Increment(key string, value int) int {
 		}
 	}
 
-	m.Put(key, value, time.Time{}) // forever
+	m.Forever(key, value) // forever
 
 	return value
 }
 
+// Decrement decrements the value of an item in the cache.
 func (m *MemoryStore) Decrement(key string, value int) int {
 	return m.Increment(key, -value)
 }
 
+// Forever stores an item in the cache indefinitely.
 func (m *MemoryStore) Forever(key string, value interface{}) bool {
-	return m.Put(key, value, time.Time{})
+	return m.Put(key, value, 0)
 }
 
+// Forget removes an item from the cache.
 func (m *MemoryStore) Forget(key string) bool {
 	if _, ok := m.records.Load(key); ok {
 		m.records.Delete(key)
@@ -94,24 +100,19 @@ func (m *MemoryStore) Forget(key string) bool {
 	return false
 }
 
+// Flush clears the cache.
 func (m *MemoryStore) Flush() bool {
 	m.records = &sync.Map{}
 
 	return true
 }
 
-func (m *MemoryStore) Has(key string) bool {
-	if _, ok := m.records.Load(key); ok {
-		return true
-	}
-
-	return false
-}
-
+// GetPrefix returns the prefix for the cache.
 func (m *MemoryStore) GetPrefix() string {
 	return ""
 }
 
+// lrucache is a goroutine that periodically removes expired items from the cache.
 func (m *MemoryStore) lrucache() {
 	for {
 		select {
@@ -125,6 +126,20 @@ func (m *MemoryStore) lrucache() {
 			})
 		}
 	}
+}
+
+var _ cache.StoreAddable = (*MemoryStore)(nil) // support add
+
+// Add adds an item to the cache if it doesn't already exist.
+func (m *MemoryStore) Add(key string, value interface{}, ttl time.Duration) bool {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	if m.Get(key) != nil {
+		return false
+	}
+
+	return m.Put(key, value, ttl)
 }
 
 // Length returns the number of items in the cache.
