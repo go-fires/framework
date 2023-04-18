@@ -10,7 +10,7 @@ import (
 func TestMemoryStore_PutGet(t *testing.T) {
 	m := NewMemoryStore()
 
-	assert.True(t, m.Put("foo", "bar", time.Now().Add(time.Second*1)))
+	assert.True(t, m.Put("foo", "bar", time.Second*1))
 	assert.Equal(t, "bar", m.Get("foo").(string))
 
 	time.Sleep(time.Second * 2)
@@ -29,7 +29,7 @@ func TestMemoryStore_IncrAndDecr(t *testing.T) {
 	assert.Equal(t, 0, m.Decrement("foo", 8))
 
 	// test overflow
-	assert.True(t, m.Put("foo", "bar", time.Now().Add(time.Second*10)))
+	assert.True(t, m.Put("foo", "bar", time.Second*10))
 	assert.Equal(t, "bar", m.Get("foo").(string))
 	assert.Equal(t, 1, m.Increment("foo", 1))
 }
@@ -49,7 +49,7 @@ func TestMemoryStore_Forever(t *testing.T) {
 func TestMemoryStore_Forget(t *testing.T) {
 	m := NewMemoryStore()
 
-	m.Put("foo", "bar", time.Now().Add(time.Second*1))
+	m.Put("foo", "bar", time.Second*1)
 	assert.Equal(t, "bar", m.Get("foo").(string))
 	assert.True(t, m.Forget("foo"))
 	assert.Nil(t, m.Get("foo"))
@@ -60,8 +60,8 @@ func TestMemoryStore_Forget(t *testing.T) {
 func TestMemoryStore_Flush(t *testing.T) {
 	m := NewMemoryStore()
 
-	m.Put("foo", "bar", time.Now().Add(time.Second*1))
-	m.Put("foo2", "bar2", time.Now().Add(time.Second*1))
+	m.Put("foo", "bar", time.Second*1)
+	m.Put("foo2", "bar2", time.Second*1)
 	assert.Equal(t, 2, m.Length())
 
 	assert.True(t, m.Flush())
