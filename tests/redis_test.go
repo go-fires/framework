@@ -2,7 +2,6 @@ package tests
 
 import (
 	"context"
-	"github.com/go-fires/framework/config"
 	"github.com/go-fires/framework/facade"
 	"github.com/go-fires/framework/redis"
 	"github.com/stretchr/testify/assert"
@@ -14,7 +13,6 @@ func TestRedis(t *testing.T) {
 	app := createApplication()
 	var ctx = context.Background()
 
-	app.Register(config.NewProvider(app))
 	app.Register(redis.NewProvider(app))
 
 	facade.Redis().Connect().Set(ctx, "key", "value", time.Second*5)

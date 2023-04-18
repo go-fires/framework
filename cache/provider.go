@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"github.com/go-fires/framework/contracts/cache"
 	"github.com/go-fires/framework/contracts/container"
 	"github.com/go-fires/framework/contracts/foundation"
 )
@@ -24,14 +23,10 @@ func NewProvider(app foundation.Application) *Provider {
 
 func (r *Provider) Register() {
 	r.app.Singleton(Cache, func(c container.Container) interface{} {
-		return NewManager(&Config{
-			Default: "redis",
-			Stores: map[string]cache.StoreConfigable{
-				"redis": &RedisStoreConfig{
-					Connection: "cache",
-					Prefix:     "cache",
-				},
-			},
-		})
+		if config, ok := r.app.Config().Get("cache").(*Config); ok {
+			return NewManager(config)
+		}
+
+		return NewManager(defaultConfig)
 	})
 }

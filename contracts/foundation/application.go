@@ -1,6 +1,9 @@
 package foundation
 
-import "github.com/go-fires/framework/contracts/container"
+import (
+	"github.com/go-fires/framework/config"
+	"github.com/go-fires/framework/contracts/container"
+)
 
 type Application interface {
 	container.Container
@@ -16,4 +19,10 @@ type Application interface {
 
 	// Terminate the application.
 	Terminate()
+
+	// Configure the real-time facade namespace.
+	Configure(name string, value interface{})
+
+	// Config Get the configuration repository instance.
+	Config() *config.Config
 }

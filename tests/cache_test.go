@@ -2,7 +2,6 @@ package tests
 
 import (
 	"github.com/go-fires/framework/cache"
-	"github.com/go-fires/framework/config"
 	"github.com/go-fires/framework/facade"
 	"github.com/go-fires/framework/redis"
 	"github.com/stretchr/testify/assert"
@@ -13,7 +12,6 @@ import (
 func TestCache(t *testing.T) {
 	app := createApplication()
 
-	app.Register(config.NewProvider(app))
 	app.Register(redis.NewProvider(app))
 	app.Register(cache.NewProvider(app))
 
