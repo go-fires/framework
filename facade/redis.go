@@ -3,10 +3,10 @@ package facade
 import "github.com/go-fires/framework/redis"
 
 func Redis() *redis.Manager {
-	var rdm *redis.Manager
-	if err := App().Make(redis.Redis, &rdm); err != nil {
+	var manager *redis.Manager
+	if err := App().Make(redis.Redis, &manager); err != nil {
 		panic(err)
 	}
 
-	return rdm
+	return manager
 }

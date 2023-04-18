@@ -7,7 +7,7 @@ import (
 )
 
 func BenchmarkMemoryStore_PutAndGet(b *testing.B) {
-	m := NewMemoryStore()
+	m := createMemoryStore()
 
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
@@ -20,7 +20,7 @@ func BenchmarkMemoryStore_PutAndGet(b *testing.B) {
 }
 
 func BenchmarkMemoryStore_Incr(b *testing.B) {
-	m := NewMemoryStore()
+	m := createMemoryStore()
 
 	var foo int
 	counter := &ints.Counter{}

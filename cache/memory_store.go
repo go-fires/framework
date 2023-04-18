@@ -16,14 +16,39 @@ func (r *record) isExpired() bool {
 	return !r.expired.IsZero() && !r.expired.After(time.Now())
 }
 
+type MemoryStoreConfig struct {
+	LruSize int // todo: lru size
+	LruTick time.Duration
+}
+
+var _ cache.StoreConfigable = (*RedisStoreConfig)(nil)
+
+func (c *MemoryStoreConfig) GetLruSize() int {
+	if c.LruSize == 0 {
+		return 1000
+	}
+
+	return c.LruSize
+}
+
+func (c *MemoryStoreConfig) GetLruTick() time.Duration {
+	if c.LruTick == 0 {
+		return time.Minute
+	}
+
+	return c.LruTick
+}
+
 type MemoryStore struct {
+	config  *MemoryStoreConfig
 	records *sync.Map
 
 	mu sync.Mutex
 }
 
-func NewMemoryStore() *MemoryStore {
+func NewMemoryStore(config *MemoryStoreConfig) *MemoryStore {
 	m := &MemoryStore{
+		config:  config,
 		records: &sync.Map{},
 	}
 
@@ -129,7 +154,7 @@ func (m *MemoryStore) GetPrefix() string {
 func (m *MemoryStore) lrucache() {
 	for {
 		select {
-		case <-time.Tick(time.Minute):
+		case <-time.Tick(m.config.GetLruTick()):
 			m.records.Range(func(key, value interface{}) bool {
 				if value.(*record).isExpired() {
 					m.Forget(key.(string))
