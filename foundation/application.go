@@ -1,8 +1,10 @@
 package foundation
 
 import (
+	"github.com/go-fires/framework/config"
 	"github.com/go-fires/framework/container"
 	"github.com/go-fires/framework/contracts/foundation"
+	"github.com/go-fires/framework/foundation/providers"
 	"sync"
 )
 
@@ -33,6 +35,8 @@ func (a *Application) init() {
 	a.Container.Instance("app", a)
 
 	SetInstance(a)
+
+	a.registerBaseProviders()
 }
 
 func (a *Application) Version() string {
@@ -88,4 +92,18 @@ func (a *Application) bootProvider(provider foundation.Provider) {
 	}
 
 	provider.Boot()
+}
+
+func (a *Application) registerBaseProviders() {
+	a.Register(providers.NewConfigProvider(a))
+}
+
+func (a *Application) Configure(name string, value interface{}) {
+	var cfg *config.Config
+
+	if a.Make("config", &cfg) != nil {
+		panic("config not found")
+	}
+
+	cfg.Set(name, value)
 }

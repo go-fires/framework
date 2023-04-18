@@ -57,7 +57,7 @@ func (c *Container) Instance(name string, instance interface{}) {
 func (c *Container) resolve(name string, value interface{}) error {
 	// if an instance of the type is currently being managed as a shared
 	if instance, ok := c.instances[name]; ok {
-		return c.value(instance, value)
+		return c.valueOf(instance, value)
 	}
 
 	// if a binding exists for the name type
@@ -76,13 +76,13 @@ func (c *Container) resolve(name string, value interface{}) error {
 
 		c.instances[name] = concrete
 
-		return c.value(concrete, value)
+		return c.valueOf(concrete, value)
 	}
 
-	return c.value(concrete, value)
+	return c.valueOf(concrete, value)
 }
 
-func (c *Container) value(src interface{}, dst interface{}) error {
+func (c *Container) valueOf(src interface{}, dst interface{}) error {
 	return helper.ValueOf(src, dst)
 }
 

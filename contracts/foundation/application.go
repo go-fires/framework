@@ -16,4 +16,7 @@ type Application interface {
 
 	// Terminate the application.
 	Terminate()
+
+	// Configure the real-time facade namespace.
+	Configure(name string, value interface{})
 }
