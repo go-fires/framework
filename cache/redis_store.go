@@ -11,6 +11,38 @@ import (
 
 var ctx = context.Background()
 
+type RedisStoreConfig struct {
+	Connection string // see redis/config.go (use Connections key)
+	Prefix     string
+	Serializer support.Serializable
+}
+
+var _ cache.StoreConfigable = (*RedisStoreConfig)(nil)
+
+func (r *RedisStoreConfig) GetConnection() string {
+	if r.Connection == "" {
+		return "default"
+	}
+
+	return r.Connection
+}
+
+func (r *RedisStoreConfig) GetPrefix() string {
+	if r.Prefix == "" {
+		return "cache:"
+	}
+
+	return r.Prefix
+}
+
+func (r *RedisStoreConfig) GetSerializer() support.Serializable {
+	if r.Serializer == nil {
+		return &serializer.JsonSerializer{}
+	}
+
+	return r.Serializer
+}
+
 type RedisStore struct {
 	redis        redis.Cmdable
 	serializable support.Serializable

@@ -16,7 +16,7 @@ func TestRespository_Base(t *testing.T) {
 		{"redis", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRespository(tt.store)
+			r := NewRepository(tt.store)
 
 			assert.True(t, r.Put("foo", "bar", time.Second*1))
 			assert.True(t, r.Has("foo"))
@@ -38,7 +38,7 @@ func TestRespository_Pull(t *testing.T) {
 		{"redis", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRespository(tt.store)
+			r := NewRepository(tt.store)
 
 			var foo string
 			r.Put("foo", "bar", time.Second*100)
@@ -58,7 +58,7 @@ func TestRespository_Set(t *testing.T) {
 		{"redis", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRespository(tt.store)
+			r := NewRepository(tt.store)
 
 			var foo string
 			assert.True(t, r.Set("foo", "bar", time.Second*1))
@@ -77,7 +77,7 @@ func TestRespository_Add(t *testing.T) {
 		{"memory", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRespository(tt.store)
+			r := NewRepository(tt.store)
 
 			var foo string
 			assert.True(t, r.Add("foo", "bar", time.Second*1))
@@ -97,7 +97,7 @@ func TestRespository_Remember(t *testing.T) {
 		{"memory", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRespository(tt.store)
+			r := NewRepository(tt.store)
 
 			var bar string
 			assert.Nil(t, r.Remember("foo", &bar, time.Second*1, func() interface{} {
@@ -122,7 +122,7 @@ func TestRespository_RememberForever(t *testing.T) {
 		{"memory", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRespository(tt.store)
+			r := NewRepository(tt.store)
 
 			var foo string
 			assert.Nil(t, r.RememberForever("foo", &foo, func() interface{} {
@@ -147,7 +147,7 @@ func TestRespository_Delete(t *testing.T) {
 		{"memory", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRespository(tt.store)
+			r := NewRepository(tt.store)
 
 			r.Put("foo", "bar", time.Second*1)
 			assert.True(t, r.Has("foo"))
@@ -167,7 +167,7 @@ func TestRespository_Clear(t *testing.T) {
 		{"memory", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			r := NewRespository(tt.store)
+			r := NewRepository(tt.store)
 
 			r.Put("foo", "bar", time.Second*1)
 			r.Put("baz", "bar", time.Second*1)

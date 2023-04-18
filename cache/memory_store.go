@@ -22,6 +22,11 @@ type MemoryStore struct {
 	mu sync.Mutex
 }
 
+type MemoryStoreConfig struct {
+}
+
+var _ cache.StoreConfigable = (*RedisStoreConfig)(nil)
+
 func NewMemoryStore() *MemoryStore {
 	m := &MemoryStore{
 		records: &sync.Map{},

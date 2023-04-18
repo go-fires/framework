@@ -7,25 +7,25 @@ import (
 	"time"
 )
 
-type Respository struct {
+type Repository struct {
 	cache.Store
 
 	mu sync.Mutex
 }
 
-var _ cache.Repository = (*Respository)(nil)
+var _ cache.Repository = (*Repository)(nil)
 
-func NewRespository(store cache.Store) *Respository {
-	return &Respository{
+func NewRepository(store cache.Store) *Repository {
+	return &Repository{
 		Store: store,
 	}
 }
 
-func (r *Respository) Missing(key string) bool {
+func (r *Repository) Missing(key string) bool {
 	return !r.Has(key)
 }
 
-func (r *Respository) Pull(key string, value interface{}) error {
+func (r *Repository) Pull(key string, value interface{}) error {
 	if s, ok := r.Store.(cache.StorePullable); ok {
 		return s.Pull(key, value)
 	}
@@ -42,11 +42,11 @@ func (r *Respository) Pull(key string, value interface{}) error {
 	}
 }
 
-func (r *Respository) Set(key string, value interface{}, ttl time.Duration) bool {
+func (r *Repository) Set(key string, value interface{}, ttl time.Duration) bool {
 	return r.Put(key, value, ttl)
 }
 
-func (r *Respository) Add(key string, value interface{}, ttl time.Duration) bool {
+func (r *Repository) Add(key string, value interface{}, ttl time.Duration) bool {
 	// if the store supports the add method, we'll just call that and return
 	if s, ok := r.Store.(cache.StoreAddable); ok {
 		return s.Add(key, value, ttl)
@@ -70,7 +70,7 @@ func (r *Respository) Add(key string, value interface{}, ttl time.Duration) bool
 //	cache.Remember("key", &value, time.Minute, func() interface{} {
 //		return "value"
 //	})
-func (r *Respository) Remember(key string, value interface{}, ttl time.Duration, callback func() interface{}) error {
+func (r *Repository) Remember(key string, value interface{}, ttl time.Duration, callback func() interface{}) error {
 	if nil == r.Get(key, value) {
 		return nil
 	}
@@ -82,14 +82,14 @@ func (r *Respository) Remember(key string, value interface{}, ttl time.Duration,
 	return helper.ValueOf(val, value)
 }
 
-func (r *Respository) RememberForever(key string, value interface{}, callback func() interface{}) error {
+func (r *Repository) RememberForever(key string, value interface{}, callback func() interface{}) error {
 	return r.Remember(key, value, 0, callback)
 }
 
-func (r *Respository) Delete(key string) bool {
+func (r *Repository) Delete(key string) bool {
 	return r.Forget(key)
 }
 
-func (r *Respository) Clear() bool {
+func (r *Repository) Clear() bool {
 	return r.Flush()
 }
