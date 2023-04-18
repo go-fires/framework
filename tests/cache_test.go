@@ -14,7 +14,7 @@ func TestCache(t *testing.T) {
 	app := createApplication()
 
 	app.Register(config.NewProvider(app))
-	app.Register(redis.NewProvider(app.Container))
+	app.Register(redis.NewProvider(app))
 	app.Register(cache.NewProvider(app))
 
 	var foo string
