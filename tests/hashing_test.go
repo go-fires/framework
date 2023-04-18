@@ -10,7 +10,7 @@ import (
 func TestHashing(test *testing.T) {
 	app := createApplication()
 
-	app.Register(hashing.NewProvider(app.Container))
+	app.Register(hashing.NewProvider(app))
 
 	assert.True(test, facade.Hash().Check("password", facade.Hash().MustMake("password")))
 }

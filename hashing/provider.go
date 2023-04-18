@@ -8,20 +8,20 @@ import (
 const Hash = "hash"
 
 type Provider struct {
-	container.Container
+	app foundation.Application
 	*foundation.UnimplementedProvider
 }
 
 var _ foundation.Provider = (*Provider)(nil)
 
-func NewProvider(c container.Container) *Provider {
+func NewProvider(app foundation.Application) *Provider {
 	return &Provider{
-		Container: c,
+		app: app,
 	}
 }
 
 func (h *Provider) Register() {
-	h.Singleton(Hash, func(c container.Container) interface{} {
+	h.app.Singleton(Hash, func(c container.Container) interface{} {
 		return NewManager(&Config{
 			Driver: "bcrypt",
 		})

@@ -10,7 +10,7 @@ import (
 func TestEncrypter(test *testing.T) {
 	app := createApplication()
 
-	app.Register(encryption.NewProvider(app.Container))
+	app.Register(encryption.NewProvider(app))
 
 	ciphertext, err1 := facade.Encrypter().Encrypt("password")
 	plaintext, err2 := facade.Encrypter().Decrypt(ciphertext)

@@ -1,23 +1,23 @@
 package config
 
 import (
-	"github.com/go-fires/framework/container"
 	"github.com/go-fires/framework/contracts/foundation"
 )
 
 type Provider struct {
-	*container.Container
+	app foundation.Application
+
 	*foundation.UnimplementedProvider
 }
 
 var _ foundation.Provider = (*Provider)(nil)
 
-func NewProvider(c *container.Container) *Provider {
+func NewProvider(app foundation.Application) *Provider {
 	return &Provider{
-		Container: c,
+		app: app,
 	}
 }
 
 func (p *Provider) Register() {
-	p.Instance("config", NewConfig())
+	p.app.Instance("config", NewConfig())
 }

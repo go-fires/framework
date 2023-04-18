@@ -10,20 +10,21 @@ import (
 const EncrypterName = "encrypter"
 
 type Provider struct {
-	container.Container
+	app foundation.Application
+
 	*foundation.UnimplementedProvider
 }
 
 var _ foundation.Provider = (*Provider)(nil)
 
-func NewProvider(c container.Container) *Provider {
+func NewProvider(app foundation.Application) *Provider {
 	return &Provider{
-		Container: c,
+		app: app,
 	}
 }
 
 func (e *Provider) Register() {
-	e.Singleton(EncrypterName, func(c container.Container) interface{} {
+	e.app.Singleton(EncrypterName, func(c container.Container) interface{} {
 		return NewEncrypter(e.parseKey("base64:4IgTbtwvozDVo4DTaTEZME8n64yLSjAvdB+VkIj/OsA=")) // TODO: get key from config
 	})
 }

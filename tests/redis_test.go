@@ -14,7 +14,7 @@ func TestRedis(t *testing.T) {
 	app := createApplication()
 	var ctx = context.Background()
 
-	app.Register(config.NewProvider(app.Container))
+	app.Register(config.NewProvider(app))
 	app.Register(redis.NewProvider(app.Container))
 
 	facade.Redis().Connect().Set(ctx, "key", "value", time.Second*5)

@@ -13,9 +13,9 @@ import (
 func TestCache(t *testing.T) {
 	app := createApplication()
 
-	app.Register(config.NewProvider(app.Container))
+	app.Register(config.NewProvider(app))
 	app.Register(redis.NewProvider(app.Container))
-	app.Register(cache.NewProvider(app.Container))
+	app.Register(cache.NewProvider(app))
 
 	var foo string
 	facade.Cache().Store("redis").Set("foo", "bar", time.Second*10)

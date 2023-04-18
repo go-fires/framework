@@ -9,21 +9,21 @@ import (
 const Cache = "cache"
 
 type Provider struct {
-	container.Container
+	app foundation.Application
 
 	*foundation.UnimplementedProvider
 }
 
 var _ foundation.Provider = (*Provider)(nil)
 
-func NewProvider(c container.Container) *Provider {
+func NewProvider(app foundation.Application) *Provider {
 	return &Provider{
-		Container: c,
+		app: app,
 	}
 }
 
 func (r *Provider) Register() {
-	r.Singleton(Cache, func(c container.Container) interface{} {
+	r.app.Singleton(Cache, func(c container.Container) interface{} {
 		return NewManager(&Config{
 			Default: "redis",
 			Stores: map[string]cache.StoreConfigable{
