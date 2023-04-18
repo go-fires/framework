@@ -2,6 +2,7 @@ package cache
 
 import (
 	"github.com/go-fires/framework/contracts/cache"
+	"github.com/go-fires/framework/support/helper"
 	"sync"
 	"time"
 )
@@ -33,17 +34,29 @@ func NewMemoryStore() *MemoryStore {
 
 var _ cache.Store = (*MemoryStore)(nil)
 
-// Get gets a value from the cache.
-func (m *MemoryStore) Get(key string) interface{} {
+func (m *MemoryStore) Has(key string) bool {
 	if v, ok := m.records.Load(key); ok {
 		if !v.(*record).isExpired() {
-			return v.(*record).value
+			return true
 		} else {
 			m.records.Delete(key)
 		}
 	}
 
-	return nil
+	return false
+}
+
+// Get gets a value from the cache.
+func (m *MemoryStore) Get(key string, value interface{}) error {
+	if v, ok := m.records.Load(key); ok {
+		if !v.(*record).isExpired() {
+			return helper.ValueOf(v.(*record).value, value)
+		} else {
+			m.records.Delete(key)
+		}
+	}
+
+	return cache.ErrKeyNotFound
 }
 
 // Put puts a value into the cache for a given number of minutes.
@@ -65,11 +78,11 @@ func (m *MemoryStore) Increment(key string, value int) int {
 		if !v.(*record).isExpired() {
 			if _, ok := v.(*record).value.(int); ok {
 				v.(*record).value = v.(*record).value.(int) + value
-			} else {
-				v.(*record).value = value
-			}
 
-			return v.(*record).value.(int)
+				return v.(*record).value.(int)
+			} else {
+				return 0 // not int
+			}
 		} else {
 			m.records.Delete(key)
 		}
@@ -135,20 +148,6 @@ func (m *MemoryStore) getExpired(ttl time.Duration) time.Time {
 	}
 
 	return time.Now().Add(ttl)
-}
-
-var _ cache.StoreAddable = (*MemoryStore)(nil) // support add
-
-// Add adds an item to the cache if it doesn't already exist.
-func (m *MemoryStore) Add(key string, value interface{}, ttl time.Duration) bool {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-
-	if m.Get(key) != nil {
-		return false
-	}
-
-	return m.Put(key, value, ttl)
 }
 
 // Length returns the number of items in the cache.

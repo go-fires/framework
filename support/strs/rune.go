@@ -1,4 +1,4 @@
-package str
+package strs
 
 type Rune rune
 type Runes []Rune

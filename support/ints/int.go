@@ -1,4 +1,4 @@
-package int
+package ints
 
 type Int int
 

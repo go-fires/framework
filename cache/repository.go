@@ -2,15 +2,18 @@ package cache
 
 import (
 	"github.com/go-fires/framework/contracts/cache"
-	"github.com/go-fires/framework/support"
+	"github.com/go-fires/framework/support/helper"
+	"sync"
 	"time"
 )
 
 type Respository struct {
 	cache.Store
+
+	mu sync.Mutex
 }
 
-var _ cache.Respository = (*Respository)(nil)
+var _ cache.Repository = (*Respository)(nil)
 
 func NewRespository(store cache.Store) *Respository {
 	return &Respository{
@@ -18,18 +21,25 @@ func NewRespository(store cache.Store) *Respository {
 	}
 }
 
-func (r *Respository) Has(key string) bool {
-	return r.Get(key) != nil
-}
-
 func (r *Respository) Missing(key string) bool {
 	return !r.Has(key)
 }
 
-func (r *Respository) Pull(key string) interface{} {
-	return support.Tap(r.Get(key), func(value interface{}) {
+func (r *Respository) Pull(key string, value interface{}) error {
+	if s, ok := r.Store.(cache.StorePullable); ok {
+		return s.Pull(key, value)
+	}
+
+	switch helper.Tap(r.Get(key, value), func(value interface{}) {
 		r.Forget(key)
-	})
+	}).(type) {
+	case nil:
+		return nil
+	case error:
+		return value.(error)
+	default:
+		return cache.ErrUnknown
+	}
 }
 
 func (r *Respository) Set(key string, value interface{}, ttl time.Duration) bool {
@@ -43,6 +53,9 @@ func (r *Respository) Add(key string, value interface{}, ttl time.Duration) bool
 	}
 
 	// otherwise we'll just simulate it by checking for an existing value and
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
 	if r.Has(key) {
 		return false
 	}
@@ -50,21 +63,27 @@ func (r *Respository) Add(key string, value interface{}, ttl time.Duration) bool
 	return r.Set(key, value, ttl)
 }
 
-func (r *Respository) Remember(key string, ttl time.Duration, callback func() interface{}) interface{} {
-	value := r.Get(key)
-	if value != nil {
-		return value
+// Remember calls the given callback and stores the result if the key does not exist.
+// Example:
+//
+//	var value string
+//	cache.Remember("key", &value, time.Minute, func() interface{} {
+//		return "value"
+//	})
+func (r *Respository) Remember(key string, value interface{}, ttl time.Duration, callback func() interface{}) error {
+	if nil == r.Get(key, value) {
+		return nil
 	}
 
-	value = callback()
+	val := callback()
 
-	r.Set(key, value, ttl)
+	r.Set(key, val, ttl)
 
-	return value
+	return helper.ValueOf(val, value)
 }
 
-func (r *Respository) RememberForever(key string, callback func() interface{}) interface{} {
-	return r.Remember(key, 0, callback)
+func (r *Respository) RememberForever(key string, value interface{}, callback func() interface{}) error {
+	return r.Remember(key, value, 0, callback)
 }
 
 func (r *Respository) Delete(key string) bool {

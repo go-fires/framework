@@ -1,4 +1,4 @@
-package str
+package strs
 
 // StrPadType is the type of padding.
 type StrPadType int
