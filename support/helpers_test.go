@@ -29,3 +29,27 @@ func TestSupport_Tap(t *testing.T) {
 	}).(*Foo)
 	assert.Equal(t, "baz", f.Name)
 }
+
+func TestSupport_With(t *testing.T) {
+	type Foo struct {
+		Name string
+	}
+
+	f := With(&Foo{Name: "foo"}).(*Foo)
+	assert.Equal(t, "foo", f.Name)
+
+	f = With(&Foo{Name: "foo"}, func(foo interface{}) interface{} {
+		foo.(*Foo).Name = "bar"
+		return foo
+	}).(*Foo)
+	assert.Equal(t, "bar", f.Name)
+
+	f = (With(&Foo{Name: "foo"}, func(foo interface{}) interface{} {
+		foo.(*Foo).Name = "bar"
+		return foo
+	}, func(foo interface{}) interface{} {
+		foo.(*Foo).Name = "baz"
+		return foo
+	})).(*Foo)
+	assert.Equal(t, "baz", f.Name)
+}

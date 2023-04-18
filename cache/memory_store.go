@@ -50,7 +50,7 @@ func (m *MemoryStore) Get(key string) interface{} {
 func (m *MemoryStore) Put(key string, value interface{}, ttl time.Duration) bool {
 	m.records.Store(key, &record{
 		value:   value,
-		expired: time.Now().Add(ttl),
+		expired: m.getExpired(ttl),
 	})
 
 	return true
@@ -126,6 +126,15 @@ func (m *MemoryStore) lrucache() {
 			})
 		}
 	}
+}
+
+// getExpired returns the time when the item should expire.
+func (m *MemoryStore) getExpired(ttl time.Duration) time.Time {
+	if ttl == 0 {
+		return time.Time{}
+	}
+
+	return time.Now().Add(ttl)
 }
 
 var _ cache.StoreAddable = (*MemoryStore)(nil) // support add
