@@ -99,11 +99,15 @@ func (a *Application) registerBaseProviders() {
 }
 
 func (a *Application) Configure(name string, value interface{}) {
+	a.Config().Set(name, value)
+}
+
+func (a *Application) Config() *config.Config {
 	var cfg *config.Config
 
 	if a.Make("config", &cfg) != nil {
 		panic("config not found")
 	}
 
-	cfg.Set(name, value)
+	return cfg
 }

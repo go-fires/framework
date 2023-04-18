@@ -6,11 +6,6 @@ import (
 	"sync"
 )
 
-type Config struct {
-	Default string
-	Stores  map[string]cache.StoreConfigable
-}
-
 type Manager struct {
 	config *Config
 	mu     sync.Mutex
@@ -74,7 +69,6 @@ func (m *Manager) createMemoryStore(config *MemoryStoreConfig) cache.Repository 
 func (m *Manager) createRedisStore(config *RedisStoreConfig) cache.Repository {
 	return m.repository(
 		NewRedisStore(
-			// todo transport to config
 			redis.NewClient(&redis.Options{
 				Addr: "localhost:6379",
 			}),

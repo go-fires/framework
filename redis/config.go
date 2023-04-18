@@ -13,3 +13,14 @@ type Config struct {
 
 	Connections map[string]Configable
 }
+
+var defaultConfig = &Config{
+	Default: "default",
+	Connections: map[string]Configable{
+		"default": &redis.Options{
+			Addr:     "localhost:6379",
+			Password: "",
+			DB:       0,
+		},
+	},
+}
