@@ -21,52 +21,60 @@ func TestRespository_Base(t *testing.T) {
 func TestRespository_Pull(t *testing.T) {
 	r := NewRespository(NewMemoryStore())
 
+	var foo string
 	r.Put("foo", "bar", time.Second*1)
-	assert.Equal(t, "bar", r.Pull("foo"))
-	assert.Nil(t, r.Get("foo"))
+	assert.Nil(t, r.Pull("foo", &foo))
+	assert.Equal(t, "bar", foo)
+	assert.False(t, r.Has("foo"))
 }
 
 func TestRespository_Set(t *testing.T) {
 	r := NewRespository(NewMemoryStore())
 
+	var foo string
 	assert.True(t, r.Set("foo", "bar", time.Second*1))
-	assert.Equal(t, "bar", r.Get("foo"))
+	assert.Nil(t, r.Get("foo", &foo))
+	assert.Equal(t, "bar", foo)
 }
 
 func TestRespository_Add(t *testing.T) {
 	r := NewRespository(NewMemoryStore())
 
+	var foo string
 	assert.True(t, r.Add("foo", "bar", time.Second*1))
-	assert.Equal(t, "bar", r.Get("foo"))
+	assert.Nil(t, r.Get("foo", &foo))
+	assert.Equal(t, "bar", foo)
 	assert.False(t, r.Add("foo", "bar", time.Second*1))
 }
 
 func TestRespository_Remember(t *testing.T) {
 	r := NewRespository(NewMemoryStore())
 
-	assert.Equal(t, "bar", r.Remember("foo", time.Second*1, func() interface{} {
+	var bar string
+	assert.Nil(t, "bar", r.Remember("foo", &bar, time.Second*1, func() interface{} {
 		return "bar"
 	}))
-	assert.Equal(t, "bar", r.Get("foo"))
+	assert.Equal(t, "bar", bar)
 
-	assert.Equal(t, "bar", r.Remember("foo", time.Second*1, func() interface{} {
+	assert.Equal(t, "bar", r.Remember("foo", &bar, time.Second*1, func() interface{} {
 		return "baz"
 	}))
-	assert.Equal(t, "bar", r.Get("foo"))
+	assert.Equal(t, "bar", bar)
 }
 
 func TestRespository_RememberForever(t *testing.T) {
 	r := NewRespository(NewMemoryStore())
 
-	assert.Equal(t, "bar", r.RememberForever("foo", func() interface{} {
+	var foo string
+	assert.Equal(t, "bar", r.RememberForever("foo", &foo, func() interface{} {
 		return "bar"
 	}))
-	assert.Equal(t, "bar", r.Get("foo"))
+	assert.Equal(t, "bar", foo)
 
-	assert.Equal(t, "bar", r.RememberForever("foo", func() interface{} {
+	assert.Equal(t, "bar", r.RememberForever("foo", &foo, func() interface{} {
 		return "baz"
 	}))
-	assert.Equal(t, "bar", r.Get("foo"))
+	assert.Equal(t, "bar", foo)
 }
 
 func TestRespository_Delete(t *testing.T) {

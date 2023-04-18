@@ -3,7 +3,9 @@ package cache
 import "time"
 
 type Store interface {
-	Get(key string) interface{}
+	Has(key string) bool
+
+	Get(key string, value interface{}) error
 
 	Put(key string, value interface{}, ttl time.Duration) bool
 
@@ -22,4 +24,8 @@ type Store interface {
 
 type StoreAddable interface {
 	Add(key string, value interface{}, ttl time.Duration) bool
+}
+
+type StorePullable interface {
+	Pull(key string, value interface{}) error
 }

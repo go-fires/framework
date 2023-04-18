@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"github.com/go-fires/framework/support/int"
+	"github.com/go-fires/framework/support/ints"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -11,10 +11,26 @@ func TestMemoryStore_PutGet(t *testing.T) {
 	m := NewMemoryStore()
 
 	assert.True(t, m.Put("foo", "bar", time.Second*1))
-	assert.Equal(t, "bar", m.Get("foo").(string))
+	var foo string
+	assert.Nil(t, m.Get("foo", &foo))
+	assert.Equal(t, "bar", foo)
 
 	time.Sleep(time.Second * 2)
-	assert.Nil(t, m.Get("foo"))
+
+	var foo2 string
+	assert.Error(t, m.Get("foo", &foo2))
+	assert.Equal(t, "", foo2)
+
+	type User struct {
+		Name string
+		Age  int
+	}
+
+	var user User
+	assert.True(t, m.Put("user", User{"foo", 18}, time.Second*1))
+	assert.Nil(t, m.Get("user", &user))
+	assert.Equal(t, "foo", user.Name)
+	assert.Equal(t, 18, user.Age)
 }
 
 func TestMemoryStore_IncrAndDecr(t *testing.T) {
@@ -30,7 +46,9 @@ func TestMemoryStore_IncrAndDecr(t *testing.T) {
 
 	// test overflow
 	assert.True(t, m.Put("foo", "bar", time.Second*10))
-	assert.Equal(t, "bar", m.Get("foo").(string))
+	var foo string
+	assert.Nil(t, m.Get("foo", &foo))
+	assert.Equal(t, "bar", foo)
 	assert.Equal(t, 1, m.Increment("foo", 1))
 }
 
@@ -38,7 +56,9 @@ func TestMemoryStore_Forever(t *testing.T) {
 	m := NewMemoryStore()
 
 	assert.True(t, m.Forever("foo", "bar"))
-	assert.Equal(t, "bar", m.Get("foo").(string))
+	var foo string
+	assert.Nil(t, m.Get("foo", &foo))
+	assert.Equal(t, "bar", foo)
 
 	m.records.Range(func(key, value interface{}) bool {
 		assert.Equal(t, time.Time{}, value.(*record).expired)
@@ -49,10 +69,12 @@ func TestMemoryStore_Forever(t *testing.T) {
 func TestMemoryStore_Forget(t *testing.T) {
 	m := NewMemoryStore()
 
+	var foo string
 	m.Put("foo", "bar", time.Second*1)
-	assert.Equal(t, "bar", m.Get("foo").(string))
+	assert.Nil(t, m.Get("foo", &foo))
+	assert.Equal(t, "bar", foo)
 	assert.True(t, m.Forget("foo"))
-	assert.Nil(t, m.Get("foo"))
+	assert.False(t, m.Has("foo"))
 
 	assert.False(t, m.Forget("foo2"))
 }
@@ -84,7 +106,8 @@ func BenchmarkMemoryStore_PutAndGet(b *testing.B) {
 func BenchmarkMemoryStore_Incr(b *testing.B) {
 	m := NewMemoryStore()
 
-	counter := &int.Counter{}
+	var foo int
+	counter := &ints.Counter{}
 
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
@@ -93,5 +116,6 @@ func BenchmarkMemoryStore_Incr(b *testing.B) {
 		}
 	})
 
-	assert.Equal(b, counter.Val(), m.Get("foo"))
+	assert.Nil(b, m.Get("foo", &foo))
+	assert.Equal(b, counter.Val(), foo)
 }

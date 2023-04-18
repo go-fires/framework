@@ -1,4 +1,4 @@
-package support
+package helper
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -52,4 +52,26 @@ func TestSupport_With(t *testing.T) {
 		return foo
 	})).(*Foo)
 	assert.Equal(t, "baz", f.Name)
+}
+
+func TestSupport_ValueOf(t *testing.T) {
+	var foo string
+	err := ValueOf("foo", &foo)
+	assert.Nil(t, err)
+	assert.Equal(t, "foo", foo)
+
+	var bar int
+	err = ValueOf(1, &bar)
+	assert.Nil(t, err)
+	assert.Equal(t, 1, bar)
+
+	type Baz struct {
+		Name string
+	}
+	var baz Baz
+	err = ValueOf(Baz{
+		Name: "baz",
+	}, &baz)
+	assert.Nil(t, err)
+	assert.Equal(t, "baz", baz.Name)
 }

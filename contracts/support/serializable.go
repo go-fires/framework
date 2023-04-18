@@ -1,7 +1,6 @@
 package support
 
-// todo: implement Serializable interface
-// type Serializable interface {
-// 	Serialize() []byte
-// 	Unserialize([]byte)
-// }
+type Serializable interface {
+	Serialize(data interface{}) ([]byte, error)
+	Unserialize(src []byte, dest interface{}) error
+}

@@ -3,7 +3,7 @@ package container
 import (
 	"fmt"
 	"github.com/go-fires/framework/contracts/container"
-	"reflect"
+	"github.com/go-fires/framework/support/helper"
 	"sync"
 )
 
@@ -83,19 +83,7 @@ func (c *Container) resolve(name string, value interface{}) error {
 }
 
 func (c *Container) value(src interface{}, dst interface{}) error {
-	rv := reflect.ValueOf(dst)
-
-	if rv.Kind() != reflect.Ptr {
-		return fmt.Errorf("dst must be a pointer")
-	}
-
-	if rv.IsNil() {
-		return fmt.Errorf("dst must not be nil")
-	}
-
-	rv.Elem().Set(reflect.ValueOf(src))
-
-	return nil
+	return helper.ValueOf(src, dst)
 }
 
 func (c *Container) Has(id string) bool {

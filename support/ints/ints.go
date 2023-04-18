@@ -1,7 +1,7 @@
-package int
+package ints
 
 import (
-	"github.com/go-fires/framework/support/str"
+	"github.com/go-fires/framework/support/strs"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -34,7 +34,7 @@ func Split(s, sep string) []int {
 	arr := make([]int, len(split))
 
 	for i, v := range split {
-		arr[i] = str.Atoi(v).Val()
+		arr[i] = strs.Atoi(v).Val()
 	}
 
 	return arr
