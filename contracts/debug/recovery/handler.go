@@ -1,6 +1,6 @@
-package debug
+package recovery
 
-type PanicHandler interface {
+type Handler interface {
 	// Report the given panic.
 	Report(interface{})
 }

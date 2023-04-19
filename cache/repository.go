@@ -53,6 +53,7 @@ func (r *Repository) Add(key string, value interface{}, ttl time.Duration) bool 
 	}
 
 	// otherwise we'll just simulate it by checking for an existing value and
+	// todo: the lock poor performance, need to improve
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
