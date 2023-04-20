@@ -23,11 +23,20 @@ func TestTick(t *testing.T) {
 		}
 	})
 
-	assert.Equal(t, 0, r)
+	func() {
+		mu.Lock()
+		defer mu.Unlock()
+		assert.Equal(t, 0, r)
+	}()
 
 	// wait for 4 seconds
-	time.Sleep(4 * time.Second)
-	assert.Equal(t, 3, r)
+	func() {
+		time.Sleep(4 * time.Second)
+
+		mu.Lock()
+		defer mu.Unlock()
+		assert.Equal(t, 3, r)
+	}()
 }
 
 func TestTimer_After(t *testing.T) {
@@ -43,8 +52,17 @@ func TestTimer_After(t *testing.T) {
 		flag = false
 	})
 
-	assert.True(t, flag)
+	func() {
+		mu.Lock()
+		defer mu.Unlock()
+		assert.True(t, flag)
+	}()
 
-	time.Sleep(2 * time.Second)
-	assert.False(t, flag)
+	func() {
+		time.Sleep(2 * time.Second)
+
+		mu.Lock()
+		defer mu.Unlock()
+		assert.False(t, flag)
+	}()
 }
