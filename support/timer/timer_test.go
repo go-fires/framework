@@ -8,10 +8,15 @@ import (
 )
 
 func TestTick(t *testing.T) {
-	var r int
+	var (
+		r  int
+		mu sync.Mutex
+	)
 
 	Tick(1*time.Second, func(ticker *time.Ticker) {
+		mu.Lock()
 		r++
+		mu.Unlock()
 
 		if r == 3 {
 			ticker.Stop()
