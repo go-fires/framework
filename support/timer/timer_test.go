@@ -2,6 +2,7 @@ package timer
 
 import (
 	"github.com/stretchr/testify/assert"
+	"sync"
 	"testing"
 	"time"
 )
@@ -25,9 +26,15 @@ func TestTick(t *testing.T) {
 }
 
 func TestTimer_After(t *testing.T) {
-	var flag = true
+	var (
+		flag = true
+		mu   sync.Mutex
+	)
 
 	After(1*time.Second, func() {
+		mu.Lock()
+		defer mu.Unlock()
+
 		flag = false
 	})
 
