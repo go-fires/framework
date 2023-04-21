@@ -1,10 +1,14 @@
-package logger
+package logging
 
 import (
 	"fmt"
-	"github.com/go-fires/framework/contracts/logger"
 	"time"
+
+	"github.com/go-fires/framework/contracts/logger"
 )
+
+type StdoutConfig struct {
+}
 
 type StdoutLogger struct {
 	logger.Loggerable

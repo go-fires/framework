@@ -2,9 +2,10 @@ package container
 
 import (
 	"fmt"
+	"sync"
+
 	"github.com/go-fires/framework/contracts/container"
 	"github.com/go-fires/framework/support/helper"
-	"sync"
 )
 
 type binding struct {
