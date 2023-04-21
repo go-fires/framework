@@ -1,9 +1,10 @@
-package logger
+package logging
 
 import (
+	"testing"
+
 	"github.com/go-fires/framework/contracts/logger"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestStdoutLogger(t *testing.T) {

@@ -1,11 +1,12 @@
 package foundation
 
 import (
+	"sync"
+
 	"github.com/go-fires/framework/config"
 	"github.com/go-fires/framework/container"
 	"github.com/go-fires/framework/contracts/foundation"
 	"github.com/go-fires/framework/foundation/providers"
-	"sync"
 )
 
 const Version = "0.0.1"
