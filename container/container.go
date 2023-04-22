@@ -45,8 +45,37 @@ func (c *Container) Singleton(name string, concrete container.Concrete) {
 	c.Bind(name, concrete, true)
 }
 
+func (c *Container) Has(id string) bool {
+	if _, ok := c.instances[id]; ok {
+		return true
+	}
+	if _, ok := c.bindings[id]; ok {
+		return true
+	}
+
+	return false
+}
+
+func (c *Container) Get(id string) (interface{}, error) {
+	return c.resolve(id)
+}
+
+func (c *Container) MustGet(id string) interface{} {
+	instance, err := c.Get(id)
+	if err != nil {
+		panic(err)
+	}
+
+	return instance
+}
+
 func (c *Container) Make(name string, value interface{}) error {
-	return c.resolve(name, value)
+	concrete, err := c.resolve(name)
+	if err != nil {
+		return err
+	}
+
+	return helper.ValueOf(concrete, value)
 }
 
 func (c *Container) Instance(name string, instance interface{}) {
@@ -55,16 +84,16 @@ func (c *Container) Instance(name string, instance interface{}) {
 
 	c.instances[name] = instance
 }
-func (c *Container) resolve(name string, value interface{}) error {
+func (c *Container) resolve(name string) (interface{}, error) {
 	// if an instance of the type is currently being managed as a shared
 	if instance, ok := c.instances[name]; ok {
-		return c.valueOf(instance, value)
+		return instance, nil
 	}
 
 	// if a binding exists for the name type
 	binding, ok := c.bindings[name]
 	if !ok {
-		return fmt.Errorf("no binding found for %s", name)
+		return nil, fmt.Errorf("no binding found for %s", name)
 	}
 
 	// if the concrete type is a function
@@ -73,26 +102,9 @@ func (c *Container) resolve(name string, value interface{}) error {
 	// if the concrete type is shared
 	if binding.shared {
 		c.mu.Lock()
-		defer c.mu.Unlock()
-
 		c.instances[name] = concrete
-
-		return c.valueOf(concrete, value)
+		c.mu.Unlock()
 	}
 
-	return c.valueOf(concrete, value)
-}
-
-func (c *Container) valueOf(src interface{}, dst interface{}) error {
-	return helper.ValueOf(src, dst)
-}
-
-func (c *Container) Has(id string) bool {
-	_, ok := c.bindings[id]
-
-	return ok
-}
-
-func (c *Container) Get(id string, value interface{}) error {
-	return c.resolve(id, value)
+	return concrete, nil
 }

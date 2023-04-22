@@ -5,10 +5,5 @@ import (
 )
 
 func Cache() *cache.Manager {
-	var manager *cache.Manager
-	if err := App().Make(cache.Cache, &manager); err != nil {
-		panic(err)
-	}
-
-	return manager
+	return App().MustGet(cache.Cache).(*cache.Manager)
 }

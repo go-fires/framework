@@ -2,9 +2,10 @@ package foundation
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/go-fires/framework/contracts/container"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 type testProvider struct {
@@ -39,7 +40,7 @@ func TestApplication_Register(t *testing.T) {
 	})
 
 	var test *testService
-	assert.Nil(t, app.Get("test", &test))
+	assert.Nil(t, app.Make("test", &test))
 	assert.Equal(t, "test name", test.Name)
 
 	app.Boot()
