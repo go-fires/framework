@@ -6,13 +6,7 @@ import (
 )
 
 func Logging() *logging.Manager {
-	var manager *logging.Manager
-
-	if err := App().Make("logging", &manager); err != nil {
-		panic(err)
-	}
-
-	return manager
+	return App().MustGet("logging").(*logging.Manager)
 }
 
 func Log(names ...string) logger.Logger {

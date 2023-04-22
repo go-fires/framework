@@ -5,11 +5,5 @@ import (
 )
 
 func Hash() *hashing.Manager {
-	var hash *hashing.Manager
-
-	if err := App().Make(hashing.Hash, &hash); err != nil {
-		panic(err)
-	}
-
-	return hash
+	return App().MustGet(hashing.Hash).(*hashing.Manager)
 }

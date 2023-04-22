@@ -5,11 +5,5 @@ import (
 )
 
 func DebugRecoveryHandler() recovery.Handler {
-	var handler recovery.Handler
-
-	if err := App().Make("debug.recovery.handler", &handler); err != nil {
-		panic(err)
-	}
-
-	return handler
+	return App().MustGet("debug.recovery.handler").(recovery.Handler)
 }

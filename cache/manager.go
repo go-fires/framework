@@ -1,9 +1,10 @@
 package cache
 
 import (
+	"sync"
+
 	"github.com/go-fires/framework/contracts/cache"
 	"github.com/redis/go-redis/v9"
-	"sync"
 )
 
 type Manager struct {

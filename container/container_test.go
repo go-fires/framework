@@ -1,9 +1,10 @@
 package container
 
 import (
+	"testing"
+
 	"github.com/go-fires/framework/contracts/container"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestContainer_Instance(t *testing.T) {
@@ -137,6 +138,22 @@ func TestContainer_Make(t *testing.T) {
 	assert.Error(t, c.Make("cc", &cc))
 	assert.Equal(t, "aa", aa.GetName())
 	assert.Equal(t, "bb", bb.GetName())
+}
+
+func TestContainer_HasAndGet(t *testing.T) {
+	c := NewContainer()
+
+	c.Bind("aa", func(c container.Container) interface{} {
+		return NewA("aa")
+	}, true)
+
+	assert.True(t, c.Has("aa"))
+	assert.False(t, c.Has("bb"))
+
+	assert.Equal(t, "aa", c.MustGet("aa").(*A).GetName())
+	assert.Panics(t, func() {
+		c.MustGet("bb")
+	})
 }
 
 func BenchmarkContainer(b *testing.B) {
