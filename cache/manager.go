@@ -3,21 +3,25 @@ package cache
 import (
 	"sync"
 
+	"github.com/go-fires/framework/config"
 	"github.com/go-fires/framework/contracts/cache"
-	"github.com/redis/go-redis/v9"
+	"github.com/go-fires/framework/contracts/container"
+	"github.com/go-fires/framework/redis"
 )
 
 type Manager struct {
-	config *Config
-	mu     sync.Mutex
+	container container.Container
+	config    *Config
+	mu        sync.Mutex
 
 	stores map[string]cache.Repository
 }
 
-func NewManager(config *Config) *Manager {
+func NewManager(container container.Container) *Manager {
 	m := &Manager{
-		config: config,
-		stores: make(map[string]cache.Repository),
+		container: container,
+		config:    container.MustGet("config").(*config.Config).Get("cache").(*Config),
+		stores:    make(map[string]cache.Repository),
 	}
 
 	return m
@@ -48,16 +52,16 @@ func (m *Manager) store(name string) cache.Repository {
 }
 
 func (m *Manager) resolve(name string) cache.Repository {
-	config, ok := m.config.Stores[name]
+	cfg, ok := m.config.Stores[name]
 	if !ok {
 		panic("cache store not found")
 	}
 
-	switch config.(type) {
+	switch cfg.(type) {
 	case *MemoryStoreConfig:
-		return m.createMemoryStore(config.(*MemoryStoreConfig))
+		return m.createMemoryStore(cfg.(*MemoryStoreConfig))
 	case *RedisStoreConfig:
-		return m.createRedisStore(config.(*RedisStoreConfig))
+		return m.createRedisStore(cfg.(*RedisStoreConfig))
 	default:
 		panic("cache store not found")
 	}
@@ -70,10 +74,7 @@ func (m *Manager) createMemoryStore(config *MemoryStoreConfig) cache.Repository 
 func (m *Manager) createRedisStore(config *RedisStoreConfig) cache.Repository {
 	return m.repository(
 		NewRedisStore(
-			redis.NewClient(&redis.Options{
-				Addr: "localhost:6379",
-			}),
-			// m.app.(config.GetConnection()),
+			m.container.MustGet("redis").(*redis.Manager).Connect(config.GetConnection()),
 			WithRedisStorePrefix(config.GetPrefix()),
 			WithRedisStoreSerializable(config.GetSerializer()),
 		),

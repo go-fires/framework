@@ -1,16 +1,14 @@
 package tests
 
 import (
-	"github.com/go-fires/framework/encryption"
+	"testing"
+
 	"github.com/go-fires/framework/facade"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestEncrypter(test *testing.T) {
-	app := createApplication()
-
-	app.Register(encryption.NewProvider(app))
+	createApplication()
 
 	ciphertext, err1 := facade.Encrypter().Encrypt("password")
 	plaintext, err2 := facade.Encrypter().Decrypt(ciphertext)

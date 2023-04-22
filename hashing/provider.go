@@ -22,8 +22,6 @@ func NewProvider(app foundation.Application) *Provider {
 
 func (h *Provider) Register() {
 	h.app.Singleton(Hash, func(c container.Container) interface{} {
-		return NewManager(&Config{
-			Driver: "bcrypt",
-		})
+		return NewManagerWithContainer(c)
 	})
 }

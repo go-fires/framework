@@ -22,10 +22,6 @@ type Store interface {
 	GetPrefix() string
 }
 
-// StoreConfigable is the interface that all cache store drivers must implement.
-type StoreConfigable interface {
-}
-
 type StoreAddable interface {
 	Add(key string, value interface{}, ttl time.Duration) bool
 }

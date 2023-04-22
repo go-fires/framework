@@ -23,10 +23,6 @@ func NewProvider(app foundation.Application) *Provider {
 
 func (r *Provider) Register() {
 	r.app.Singleton(Cache, func(c container.Container) interface{} {
-		if config, ok := r.app.Config().Get("cache").(*Config); ok {
-			return NewManager(config)
-		}
-
-		return NewManager(defaultConfig)
+		return NewManager(c)
 	})
 }
