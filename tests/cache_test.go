@@ -1,19 +1,15 @@
 package tests
 
 import (
-	"github.com/go-fires/framework/cache"
-	"github.com/go-fires/framework/facade"
-	"github.com/go-fires/framework/redis"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/go-fires/framework/facade"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCache(t *testing.T) {
-	app := createApplication()
-
-	app.Register(redis.NewProvider(app))
-	app.Register(cache.NewProvider(app))
+	createApplication()
 
 	var foo string
 	facade.Cache().Store("redis").Set("foo", "bar", time.Second*10)

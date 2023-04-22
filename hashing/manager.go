@@ -2,8 +2,11 @@ package hashing
 
 import (
 	"fmt"
-	"github.com/go-fires/framework/contracts/hashing"
 	"sync"
+
+	"github.com/go-fires/framework/config"
+	"github.com/go-fires/framework/contracts/container"
+	"github.com/go-fires/framework/contracts/hashing"
 )
 
 type Manager struct {
@@ -27,6 +30,11 @@ func NewManager(config *Config) *Manager {
 		config:  config,
 		drivers: make(map[string]hashing.Hasher, 5),
 	}
+}
+
+// NewManagerWithContainer creates a new hashing manager instance with container.
+func NewManagerWithContainer(container container.Container) *Manager {
+	return NewManager(container.MustGet("config").(*config.Config).Get("hashing").(*Config))
 }
 
 // Driver gets the hasher instance by driver name.

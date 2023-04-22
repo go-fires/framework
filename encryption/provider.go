@@ -2,9 +2,12 @@ package encryption
 
 import (
 	"encoding/base64"
+	"strings"
+
+	"github.com/go-fires/framework/config"
 	"github.com/go-fires/framework/contracts/container"
 	"github.com/go-fires/framework/contracts/foundation"
-	"strings"
+	f "github.com/go-fires/framework/foundation"
 )
 
 const EncrypterName = "encrypter"
@@ -25,7 +28,9 @@ func NewProvider(app foundation.Application) *Provider {
 
 func (e *Provider) Register() {
 	e.app.Singleton(EncrypterName, func(c container.Container) interface{} {
-		return NewEncrypter(e.parseKey("base64:4IgTbtwvozDVo4DTaTEZME8n64yLSjAvdB+VkIj/OsA=")) // TODO: get key from config
+		return NewEncrypter(
+			e.parseKey(
+				c.MustGet("config").(*config.Config).Get("app").(*f.Config).Key))
 	})
 }
 

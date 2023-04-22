@@ -1,10 +1,11 @@
 package cache
 
 import (
-	"github.com/go-fires/framework/contracts/cache"
-	"github.com/go-fires/framework/support/helper"
 	"sync"
 	"time"
+
+	"github.com/go-fires/framework/contracts/cache"
+	"github.com/go-fires/framework/support/helper"
 )
 
 type record struct {
@@ -21,7 +22,7 @@ type MemoryStoreConfig struct {
 	LruTick time.Duration
 }
 
-var _ cache.StoreConfigable = (*RedisStoreConfig)(nil)
+var _ StoreConfigable = (*RedisStoreConfig)(nil)
 
 func (c *MemoryStoreConfig) GetLruSize() int {
 	if c.LruSize == 0 {

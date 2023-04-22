@@ -2,11 +2,12 @@ package cache
 
 import (
 	"context"
+	"time"
+
 	"github.com/go-fires/framework/contracts/cache"
 	"github.com/go-fires/framework/contracts/support"
 	"github.com/go-fires/framework/support/serializer"
 	"github.com/redis/go-redis/v9"
-	"time"
 )
 
 var ctx = context.Background()
@@ -17,7 +18,7 @@ type RedisStoreConfig struct {
 	Serializer support.Serializable
 }
 
-var _ cache.StoreConfigable = (*RedisStoreConfig)(nil)
+var _ StoreConfigable = (*RedisStoreConfig)(nil)
 
 func (r *RedisStoreConfig) GetConnection() string {
 	if r.Connection == "" {
