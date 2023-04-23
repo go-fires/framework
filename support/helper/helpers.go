@@ -2,7 +2,10 @@ package helper
 
 import (
 	"fmt"
+	"io"
 	"reflect"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 // Tap calls the given callback with the given value then returns the value.
@@ -85,4 +88,25 @@ func CallWithCtx(ctx interface{}, fn interface{}, params ...interface{}) interfa
 	}
 
 	return fv.Call(args)[0].Interface()
+}
+
+// Dump dumps the given values.
+// It's a wrapper for spew.Dump(https://github.com/davecgh/go-spew)
+// This is useful for debugging.
+func Dump(v ...interface{}) {
+	spew.Dump(v...)
+}
+
+// Sdump dumps the given values and returns the result.
+// It's a wrapper for spew.Sdump(https://github.com/davecgh/go-spew)
+// This is useful for debugging.
+func Sdump(v ...interface{}) string {
+	return spew.Sdump(v...)
+}
+
+// Fdump dumps the given values to the given writer.
+// It's a wrapper for spew.Fdump(https://github.com/davecgh/go-spew)
+// This is useful for debugging.
+func Fdump(w io.Writer, v ...interface{}) {
+	spew.Fdump(w, v...)
 }
