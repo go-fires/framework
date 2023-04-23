@@ -1,6 +1,8 @@
 package helper
 
 import (
+	"fmt"
+	"os"
 	"strconv"
 	"testing"
 
@@ -109,5 +111,27 @@ func TestCallWithCtx(t *testing.T) {
 		CallWithCtx(&Foo{Name: "Hello"}, func(ts *Foo, name string) string {
 			return ts.Name + name
 		})
+	})
+}
+
+func TestDump(t *testing.T) {
+	Dump("foo", []byte("1234567890"), &struct {
+		Name string
+	}{
+		Name: "foo",
+	}, func() {
+		panic("foo")
+	})
+
+	fmt.Println(Sdump("foo", []byte("1234567890"), &struct {
+		Name string
+	}{
+		Name: "foo",
+	}))
+
+	Fdump(os.Stdout, "foo", []byte("1234567890"), &struct {
+		Name string
+	}{
+		Name: "foo",
 	})
 }
