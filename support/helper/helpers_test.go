@@ -1,11 +1,13 @@
 package helper
 
 import (
-	"github.com/stretchr/testify/assert"
+	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestSupport_Tap(t *testing.T) {
+func TestTap(t *testing.T) {
 	Tap("foo", func(value interface{}) {
 		assert.Equal(t, "foo", value)
 	})
@@ -30,7 +32,7 @@ func TestSupport_Tap(t *testing.T) {
 	assert.Equal(t, "baz", f.Name)
 }
 
-func TestSupport_With(t *testing.T) {
+func TestWith(t *testing.T) {
 	type Foo struct {
 		Name string
 	}
@@ -54,7 +56,7 @@ func TestSupport_With(t *testing.T) {
 	assert.Equal(t, "baz", f.Name)
 }
 
-func TestSupport_ValueOf(t *testing.T) {
+func TestValueOf(t *testing.T) {
 	var foo string
 	err := ValueOf("foo", &foo)
 	assert.Nil(t, err)
@@ -74,4 +76,38 @@ func TestSupport_ValueOf(t *testing.T) {
 	}, &baz)
 	assert.Nil(t, err)
 	assert.Equal(t, "baz", baz.Name)
+}
+
+func TestCall(t *testing.T) {
+	result := Call(func() string {
+		return "foo"
+	})
+	assert.Equal(t, "foo", result)
+
+	result = Call(func(name string) string {
+		return name
+	}, "foo")
+	assert.Equal(t, "foo", result)
+
+	result = Call(func(name string, age int) string {
+		return name + strconv.Itoa(age)
+	}, "foo", 1)
+	assert.Equal(t, "foo1", result)
+}
+
+func TestCallWithCtx(t *testing.T) {
+	type Foo struct {
+		Name string
+	}
+
+	result := CallWithCtx(&Foo{Name: "Hello"}, func(ts *Foo, name string) string {
+		return ts.Name + name
+	}, "world")
+	assert.Equal(t, "Helloworld", result)
+
+	assert.Panics(t, func() {
+		CallWithCtx(&Foo{Name: "Hello"}, func(ts *Foo, name string) string {
+			return ts.Name + name
+		})
+	})
 }

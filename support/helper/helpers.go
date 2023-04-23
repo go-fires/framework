@@ -24,6 +24,11 @@ func With(value interface{}, callbacks ...func(interface{}) interface{}) interfa
 }
 
 // ValueOf sets the value of dest to the value of src.
+//
+// Example:
+//
+//	var foo string
+//	ValueOf("bar", &foo)
 func ValueOf(src interface{}, dest interface{}) error {
 	rv := reflect.ValueOf(dest)
 
@@ -38,4 +43,46 @@ func ValueOf(src interface{}, dest interface{}) error {
 	rv.Elem().Set(reflect.ValueOf(src))
 
 	return nil
+}
+
+// Call calls the given function with the given params.
+//
+// Example:
+//
+//	Call(func(name string) string {
+//		return "Hello " + name
+//	}, "world")
+func Call(fn interface{}, params ...interface{}) interface{} {
+	return CallWithCtx(nil, fn, params...)
+}
+
+// CallWithCtx calls the given function with the given context and params.
+//
+// Example:
+//
+//	type Foo struct {
+//		Name string
+//	}
+//
+//	result := CallWithCtx(&Foo{Name: "Hello"}, func(ts *Foo, name string) string {
+//		return ts.Name + name
+//	}, "world")
+func CallWithCtx(ctx interface{}, fn interface{}, params ...interface{}) interface{} {
+	fv := reflect.ValueOf(fn)
+
+	if fv.Kind() != reflect.Func {
+		panic("fn must be a function")
+	}
+
+	var args []reflect.Value
+
+	if ctx != nil {
+		args = append(args, reflect.ValueOf(ctx))
+	}
+
+	for _, param := range params {
+		args = append(args, reflect.ValueOf(param))
+	}
+
+	return fv.Call(args)[0].Interface()
 }
