@@ -135,3 +135,31 @@ func TestDump(t *testing.T) {
 		Name: "foo",
 	})
 }
+
+func TestTry(t *testing.T) {
+	var fail, success bool
+
+	assert.False(t, fail)
+	assert.False(t, success)
+
+	Try(func() {
+		panic("foo")
+	}).Catch(func(err interface{}) {
+		fail = true
+		fmt.Println(err)
+	}).Finally(func() {
+		fmt.Println("finally")
+	})
+
+	Try(func() {
+		fmt.Println("success")
+	}).Catch(func(err interface{}) {
+		fmt.Println(err)
+	}).Finally(func() {
+		success = true
+		fmt.Println("finally")
+	})
+
+	assert.True(t, fail)
+	assert.True(t, success)
+}

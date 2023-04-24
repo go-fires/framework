@@ -6,6 +6,7 @@ import (
 	"reflect"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/go-fires/framework/support/try"
 )
 
 // Tap calls the given callback with the given value then returns the value.
@@ -109,4 +110,10 @@ func Sdump(v ...interface{}) string {
 // This is useful for debugging.
 func Fdump(w io.Writer, v ...interface{}) {
 	spew.Fdump(w, v...)
+}
+
+// Try calls the given function and returns a Try instance.
+// It's a wrapper for try.NewTry().
+func Try(fn func()) *try.Try {
+	return try.NewTry(fn)
 }
