@@ -2,7 +2,6 @@ package helper
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"testing"
 
@@ -78,6 +77,10 @@ func TestValueOf(t *testing.T) {
 	}, &baz)
 	assert.Nil(t, err)
 	assert.Equal(t, "baz", baz.Name)
+
+	assert.Error(t, ValueOf("foo", nil))
+	var baz2 *Baz
+	assert.Error(t, ValueOf("foo", baz2))
 }
 
 func TestCall(t *testing.T) {
@@ -112,27 +115,9 @@ func TestCallWithCtx(t *testing.T) {
 			return ts.Name + name
 		})
 	})
-}
 
-func TestDump(t *testing.T) {
-	Dump("foo", []byte("1234567890"), &struct {
-		Name string
-	}{
-		Name: "foo",
-	}, func() {
-		panic("foo")
-	})
-
-	fmt.Println(Sdump("foo", []byte("1234567890"), &struct {
-		Name string
-	}{
-		Name: "foo",
-	}))
-
-	Fdump(os.Stdout, "foo", []byte("1234567890"), &struct {
-		Name string
-	}{
-		Name: "foo",
+	assert.Panics(t, func() {
+		CallWithCtx(&Foo{Name: "Hello"}, "111", "world", "foo")
 	})
 }
 
