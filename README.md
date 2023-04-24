@@ -19,6 +19,8 @@ go get github.com/go-fires/framework
 // TODO: Write usage instructions
 ```
 
+![Alt](https://repobeats.axiom.co/api/embed/9919360081b7e54c93a1c983ac95ffc344d35815.svg "Repobeats analytics image")
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
