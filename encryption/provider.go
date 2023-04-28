@@ -39,7 +39,7 @@ func (e *Provider) Register() {
 // with base64.StdEncoding.
 // Otherwise, it will be returned as-is.
 func (e *Provider) parseKey(key string) string {
-	if strings.Contains(key, "base64:") == false {
+	if !strings.Contains(key, "base64:") {
 		return key
 	}
 

@@ -55,9 +55,7 @@ func (d *Dispatcher) GetListeners(name string) []event.Listener {
 
 // Flush remove listeners of event
 func (d *Dispatcher) Flush(name string) {
-	if _, ok := d.listeners[name]; ok {
-		delete(d.listeners, name)
-	}
+	delete(d.listeners, name)
 }
 
 // FlushAll remove all listeners
