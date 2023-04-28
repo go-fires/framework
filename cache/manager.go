@@ -57,11 +57,11 @@ func (m *Manager) resolve(name string) cache.Repository {
 		panic("cache store not found")
 	}
 
-	switch cfg.(type) {
+	switch cfg := cfg.(type) {
 	case *MemoryStoreConfig:
-		return m.createMemoryStore(cfg.(*MemoryStoreConfig))
+		return m.createMemoryStore(cfg)
 	case *RedisStoreConfig:
-		return m.createRedisStore(cfg.(*RedisStoreConfig))
+		return m.createRedisStore(cfg)
 	default:
 		panic("cache store not found")
 	}
