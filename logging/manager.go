@@ -20,8 +20,8 @@ func NewManager(config *Config) *Manager {
 		resolved: make(map[string]logger.Logger),
 	}
 
-	m.Loggerable = func(level logger.Level, s string) error {
-		return m.Channel().Log(level, s)
+	m.Loggerable = func(level logger.Level, s string) {
+		m.Channel().Log(level, s)
 	}
 
 	return m

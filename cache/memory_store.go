@@ -153,17 +153,14 @@ func (m *MemoryStore) GetPrefix() string {
 
 // lrucache is a goroutine that periodically removes expired items from the cache.
 func (m *MemoryStore) lrucache() {
-	for {
-		select {
-		case <-time.Tick(m.config.GetLruTick()):
-			m.records.Range(func(key, value interface{}) bool {
-				if value.(*record).isExpired() {
-					m.Forget(key.(string))
-				}
+	for range time.Tick(m.config.GetLruTick()) {
+		m.records.Range(func(key, value interface{}) bool {
+			if value.(*record).isExpired() {
+				m.Forget(key.(string))
+			}
 
-				return true
-			})
-		}
+			return true
+		})
 	}
 }
 

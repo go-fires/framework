@@ -169,7 +169,7 @@ func BenchmarkContainer(b *testing.B) {
 
 	var aa, bb *A
 	for i := 0; i < b.N; i++ {
-		c.Make("aa", &aa)
-		c.Make("bb", &bb)
+		_ = c.Make("aa", &aa)
+		_ = c.Make("bb", &bb)
 	}
 }

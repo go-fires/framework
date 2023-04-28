@@ -54,13 +54,10 @@ func (m *Manager) resolve(name string) redis.Cmdable {
 	switch m.config.Connections[name].(type) {
 	case *redis.Options:
 		rdb = redis.NewClient(m.config.Connections[name].(*redis.Options))
-		break
 	case *redis.ClusterOptions:
 		rdb = redis.NewClusterClient(m.config.Connections[name].(*redis.ClusterOptions))
-		break
 	case *redis.RingOptions:
 		rdb = redis.NewRing(m.config.Connections[name].(*redis.RingOptions))
-		break
 	default:
 		panic("connection " + name + " is not defined")
 	}

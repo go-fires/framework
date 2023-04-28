@@ -14,6 +14,6 @@ func TestManager(t *testing.T) {
 		},
 	})
 
-	m.Channel().Info("test")
-	m.Info("test")
+	m.Channel().Info("test") //nolint:errcheck
+	m.Info("test")           //nolint:errcheck
 }
