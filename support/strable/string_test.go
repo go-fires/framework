@@ -1,4 +1,4 @@
-package strs
+package strable
 
 import (
 	"github.com/stretchr/testify/assert"

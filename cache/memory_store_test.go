@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"github.com/go-fires/framework/support/ints"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -23,7 +22,7 @@ func BenchmarkMemoryStore_Incr(b *testing.B) {
 	m := createMemoryStore()
 
 	var foo int
-	counter := &ints.Counter{}
+	counter := &intable.Counter{}
 
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {

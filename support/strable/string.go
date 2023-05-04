@@ -1,4 +1,4 @@
-package strs
+package strable
 
 type String string
 
@@ -53,7 +53,7 @@ func (s String) Shuffle() string {
 }
 
 // Atoi returns the integer value of a string.
-func (s String) Atoi() AtoiRes {
+func (s String) Atoi() AtoiResp {
 	return Atoi(s.String())
 }
 
