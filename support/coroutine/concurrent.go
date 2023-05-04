@@ -14,7 +14,10 @@ func (c *Concurrent) Run(fn func()) {
 	c.channel <- struct{}{}
 
 	go func() {
+		defer func() {
+			<-c.channel
+		}()
+
 		fn()
-		<-c.channel
 	}()
 }

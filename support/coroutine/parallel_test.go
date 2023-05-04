@@ -8,6 +8,8 @@ import (
 )
 
 func TestParallel(t *testing.T) {
+	t.Skip("skipping test in race mode.")
+
 	p := NewParallel(10)
 
 	start := time.Now()

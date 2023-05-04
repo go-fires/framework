@@ -21,13 +21,13 @@ func (p *Parallel) Add(fn ...func()) {
 
 func (p *Parallel) Wait() {
 	p.wg.Add(len(p.callbacks))
+	defer p.wg.Wait()
 
 	for _, fn := range p.callbacks {
 		p.concurrent.Run(func() {
+			defer p.wg.Done()
+
 			fn()
-			p.wg.Done()
 		})
 	}
-
-	p.wg.Wait()
 }
