@@ -3,30 +3,23 @@ package coroutine
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	"sync"
 	"testing"
 	"time"
 )
 
-func TestConcurrent(t *testing.T) {
-	c := NewConcurrent(10)
+func TestParallel(t *testing.T) {
+	p := NewParallel(10)
 
-	var (
-		start = time.Now()
-		wg    = sync.WaitGroup{}
-	)
+	start := time.Now()
 
 	for i := 0; i < 20; i++ {
-		c.Run(func() {
-			wg.Add(1)
-			defer wg.Done()
-
-			time.Sleep(1 * time.Second)
+		p.Add(func() {
 			fmt.Println(time.Now().String())
+			time.Sleep(1 * time.Second)
 		})
 	}
 
-	wg.Wait()
+	p.Wait()
 
 	assert.True(t, time.Since(start) < 2*time.Second+300*time.Millisecond)
 }
