@@ -1,7 +1,7 @@
-package ints
+package intable
 
 import (
-	"github.com/go-fires/framework/support/strs"
+	"github.com/go-fires/framework/support/strable"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -34,7 +34,7 @@ func Split(s, sep string) []int {
 	arr := make([]int, len(split))
 
 	for i, v := range split {
-		arr[i] = strs.Atoi(v).Val()
+		arr[i] = strable.Atoi(v).Val()
 	}
 
 	return arr

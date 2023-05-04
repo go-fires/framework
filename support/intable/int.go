@@ -1,4 +1,4 @@
-package ints
+package intable
 
 type Int int
 

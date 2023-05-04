@@ -1,4 +1,4 @@
-package strs
+package strable
 
 // StrPadType is the type of padding.
 type StrPadType int

@@ -1,4 +1,4 @@
-package ints
+package intable
 
 import (
 	"github.com/stretchr/testify/assert"
