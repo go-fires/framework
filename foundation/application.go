@@ -15,7 +15,7 @@ type Application struct {
 	*container.Container
 
 	providers []foundation.Provider
-	mu        sync.RWMutex
+	mu        sync.Mutex
 	booted    bool
 }
 

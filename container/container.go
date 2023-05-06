@@ -84,6 +84,7 @@ func (c *Container) Instance(name string, instance interface{}) {
 
 	c.instances[name] = instance
 }
+
 func (c *Container) resolve(name string) (interface{}, error) {
 	// if an instance of the type is currently being managed as a shared
 	if instance, ok := c.instances[name]; ok {
