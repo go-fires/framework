@@ -1,4 +1,3 @@
-// build:
 package timer
 
 import (
