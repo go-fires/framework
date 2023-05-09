@@ -10,6 +10,8 @@ func NewConcurrent(max int) *Concurrent {
 	}
 }
 
+// Run runs a function in a goroutine, but limits the number of goroutines running at the same time.
+// Warning: Please pay attention to the scope of variables in the function.
 func (c *Concurrent) Run(fn func()) {
 	c.channel <- struct{}{}
 
