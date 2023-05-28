@@ -3,13 +3,12 @@ package hashing
 import (
 	"crypto/sha1"
 	"fmt"
-	"github.com/go-fires/framework/contracts/hashing"
 )
 
 type Sha1Hasher struct {
 }
 
-var _ hashing.Hasher = (*Sha1Hasher)(nil)
+var _ Hasher = (*Sha1Hasher)(nil)
 
 // NewSha1Hasher creates a new sha1 hasher instance.
 func NewSha1Hasher() *Sha1Hasher {
