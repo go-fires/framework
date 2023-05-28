@@ -11,7 +11,7 @@ import (
 type Manager struct {
 	config  *Config
 	drivers map[string]Hasher
-	mu      sync.Mutex
+	rw      sync.RWMutex
 }
 
 type Config struct {
@@ -27,7 +27,7 @@ type Config struct {
 func NewManager(config *Config) *Manager {
 	return &Manager{
 		config:  config,
-		drivers: make(map[string]Hasher, 5),
+		drivers: make(map[string]Hasher),
 	}
 }
 
@@ -47,13 +47,16 @@ func (m *Manager) Driver(driver ...string) Hasher {
 
 // resolve gets the hasher instance by name.
 func (m *Manager) resolve(driver string) Hasher {
+	m.rw.RLock()
 	hasher, ok := m.drivers[driver]
 	if ok {
 		return hasher
 	}
+	m.rw.RUnlock()
 
-	m.mu.Lock()
-	defer m.mu.Unlock()
+	// If the hasher was not found, we will attempt to resolve it via the resolver
+	m.rw.Lock()
+	defer m.rw.Unlock()
 
 	switch driver {
 	case "bcrypt":
