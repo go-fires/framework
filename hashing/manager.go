@@ -50,6 +50,7 @@ func (m *Manager) resolve(driver string) Hasher {
 	m.rw.RLock()
 	hasher, ok := m.drivers[driver]
 	if ok {
+		m.rw.RUnlock()
 		return hasher
 	}
 	m.rw.RUnlock()
