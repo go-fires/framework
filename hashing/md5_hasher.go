@@ -3,13 +3,12 @@ package hashing
 import (
 	"crypto/md5"
 	"fmt"
-	"github.com/go-fires/framework/contracts/hashing"
 )
 
 type Md5Hasher struct {
 }
 
-var _ hashing.Hasher = (*Md5Hasher)(nil)
+var _ Hasher = (*Md5Hasher)(nil)
 
 // NewMd5Hasher creates a new md5 hasher instance.
 func NewMd5Hasher() *Md5Hasher {

@@ -1,14 +1,13 @@
 package hashing
 
 import (
-	"github.com/go-fires/framework/contracts/hashing"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type BcryptHasher struct {
 }
 
-var _ hashing.Hasher = (*BcryptHasher)(nil)
+var _ Hasher = (*BcryptHasher)(nil)
 
 // NewBcryptHasher returns a new bcrypt hasher.
 func NewBcryptHasher() *BcryptHasher {
