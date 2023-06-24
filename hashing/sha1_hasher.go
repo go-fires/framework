@@ -5,25 +5,19 @@ import (
 	"fmt"
 )
 
-type Sha1Hasher struct {
-}
+var Sha1 Hasher = &sha1Hasher{}
 
-var _ Hasher = (*Sha1Hasher)(nil)
-
-// NewSha1Hasher creates a new sha1 hasher instance.
-func NewSha1Hasher() *Sha1Hasher {
-	return &Sha1Hasher{}
-}
+type sha1Hasher struct{}
 
 // Make generates a new hashed value.
-func (s *Sha1Hasher) Make(value string) (string, error) {
+func (s *sha1Hasher) Make(value string) (string, error) {
 	hashedValue := sha1.New().Sum([]byte(value))
 
 	return fmt.Sprintf("%x", hashedValue), nil
 }
 
 // MustMake generates a new hashed value.
-func (s *Sha1Hasher) MustMake(value string) string {
+func (s *sha1Hasher) MustMake(value string) string {
 	hashedValue, err := s.Make(value)
 
 	if err != nil {
@@ -34,7 +28,7 @@ func (s *Sha1Hasher) MustMake(value string) string {
 }
 
 // Check checks the given value and hashed value.
-func (s *Sha1Hasher) Check(value, hashedValue string) bool {
+func (s *sha1Hasher) Check(value, hashedValue string) bool {
 	hv, err := s.Make(value)
 
 	if err != nil {
