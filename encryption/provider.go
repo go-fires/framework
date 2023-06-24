@@ -2,12 +2,12 @@ package encryption
 
 import (
 	"encoding/base64"
+	f "github.com/go-fires/fires/x/foundation"
 	"strings"
 
 	"github.com/go-fires/fires/config"
 	"github.com/go-fires/fires/contracts/container"
 	"github.com/go-fires/fires/contracts/foundation"
-	f "github.com/go-fires/fires/foundation"
 )
 
 const EncrypterName = "encrypter"
