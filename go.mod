@@ -1,4 +1,4 @@
-module github.com/go-fires/framework
+module github.com/go-fires/fires
 
 go 1.20
 

@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/go-fires/framework/contracts/cache"
-	"github.com/go-fires/framework/contracts/support"
-	"github.com/go-fires/framework/support/serializer"
+	"github.com/go-fires/fires/contracts/cache"
+	"github.com/go-fires/fires/contracts/support"
+	"github.com/go-fires/fires/support/serializer"
 	"github.com/redis/go-redis/v9"
 )
 

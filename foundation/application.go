@@ -3,10 +3,10 @@ package foundation
 import (
 	"sync"
 
-	"github.com/go-fires/framework/config"
-	"github.com/go-fires/framework/container"
-	"github.com/go-fires/framework/contracts/foundation"
-	"github.com/go-fires/framework/foundation/providers"
+	"github.com/go-fires/fires/config"
+	"github.com/go-fires/fires/container"
+	"github.com/go-fires/fires/contracts/foundation"
+	"github.com/go-fires/fires/foundation/providers"
 )
 
 const Version = "0.0.1"

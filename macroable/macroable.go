@@ -3,7 +3,7 @@ package macroable
 import (
 	"sync"
 
-	"github.com/go-fires/framework/support/helper"
+	"github.com/go-fires/fires/support/helper"
 )
 
 type Macroable struct {

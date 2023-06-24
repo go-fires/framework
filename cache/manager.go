@@ -3,10 +3,10 @@ package cache
 import (
 	"sync"
 
-	"github.com/go-fires/framework/config"
-	"github.com/go-fires/framework/contracts/cache"
-	"github.com/go-fires/framework/contracts/container"
-	"github.com/go-fires/framework/redis"
+	"github.com/go-fires/fires/config"
+	"github.com/go-fires/fires/contracts/cache"
+	"github.com/go-fires/fires/contracts/container"
+	"github.com/go-fires/fires/redis"
 )
 
 type Manager struct {

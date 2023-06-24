@@ -1,7 +1,7 @@
 package facade
 
 import (
-	"github.com/go-fires/framework/cache"
+	"github.com/go-fires/fires/cache"
 )
 
 func Cache() *cache.Manager {

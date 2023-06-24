@@ -1,11 +1,11 @@
 package tests
 
 import (
-	"github.com/go-fires/framework/cache"
-	"github.com/go-fires/framework/encryption"
-	"github.com/go-fires/framework/foundation"
-	"github.com/go-fires/framework/hashing"
-	"github.com/go-fires/framework/redis"
+	"github.com/go-fires/fires/cache"
+	"github.com/go-fires/fires/encryption"
+	"github.com/go-fires/fires/foundation"
+	"github.com/go-fires/fires/hashing"
+	"github.com/go-fires/fires/redis"
 	rdb "github.com/redis/go-redis/v9"
 )
 

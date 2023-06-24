@@ -1,7 +1,7 @@
 package recovery
 
 import (
-	"github.com/go-fires/framework/contracts/debug/recovery"
+	"github.com/go-fires/fires/contracts/debug/recovery"
 )
 
 type Handler struct {

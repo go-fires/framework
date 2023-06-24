@@ -1,9 +1,9 @@
 package recovery
 
 import (
-	"github.com/go-fires/framework/contracts/container"
-	"github.com/go-fires/framework/contracts/debug/recovery"
-	"github.com/go-fires/framework/contracts/foundation"
+	"github.com/go-fires/fires/contracts/container"
+	"github.com/go-fires/fires/contracts/debug/recovery"
+	"github.com/go-fires/fires/contracts/foundation"
 )
 
 type Provider struct {

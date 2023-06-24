@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"github.com/go-fires/framework/contracts/cache"
-	"github.com/go-fires/framework/support/helper"
+	"github.com/go-fires/fires/contracts/cache"
+	"github.com/go-fires/fires/support/helper"
 	"sync"
 	"time"
 )

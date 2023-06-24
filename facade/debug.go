@@ -1,7 +1,7 @@
 package facade
 
 import (
-	"github.com/go-fires/framework/debug/recovery"
+	"github.com/go-fires/fires/debug/recovery"
 )
 
 func DebugRecoveryHandler() recovery.Handler {

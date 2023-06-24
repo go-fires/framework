@@ -1,8 +1,8 @@
 package facade
 
 import (
-	"github.com/go-fires/framework/contracts/logger"
-	"github.com/go-fires/framework/logging"
+	"github.com/go-fires/fires/contracts/logger"
+	"github.com/go-fires/fires/logging"
 )
 
 func Logging() *logging.Manager {
