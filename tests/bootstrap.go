@@ -3,19 +3,19 @@ package tests
 import (
 	"github.com/go-fires/fires/cache"
 	"github.com/go-fires/fires/encryption"
-	"github.com/go-fires/fires/foundation"
 	"github.com/go-fires/fires/hashing"
 	"github.com/go-fires/fires/redis"
+	foundation2 "github.com/go-fires/fires/x/foundation"
 	rdb "github.com/redis/go-redis/v9"
 )
 
 type application struct {
-	*foundation.Application
+	*foundation2.Application
 }
 
 func createApplication() *application {
 	app := &application{
-		Application: foundation.NewApplication(),
+		Application: foundation2.NewApplication(),
 	}
 
 	app.configure()
@@ -32,7 +32,7 @@ func (app *application) register() {
 }
 
 func (app *application) configure() {
-	app.Configure("app", &foundation.Config{
+	app.Configure("app", &foundation2.Config{
 		Name:     "test",
 		Env:      "testing",
 		Debug:    true,
