@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/davecgh/go-spew v1.1.1
+	github.com/go-fires/framework v0.3.2
 	github.com/golang-module/carbon/v2 v2.2.3
 	github.com/joho/godotenv v1.5.1
 	github.com/redis/go-redis/v9 v9.0.3
