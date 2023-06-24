@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/go-fires/framework/config"
-	"github.com/go-fires/framework/contracts/container"
+	"github.com/go-fires/fires/config"
+	"github.com/go-fires/fires/contracts/container"
 )
 
 type Manager struct {

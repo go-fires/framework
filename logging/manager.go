@@ -3,7 +3,7 @@ package logging
 import (
 	"sync"
 
-	"github.com/go-fires/framework/contracts/logger"
+	"github.com/go-fires/fires/contracts/logger"
 )
 
 type Manager struct {
