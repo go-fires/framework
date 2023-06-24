@@ -1,114 +1,12 @@
 package foundation
 
-import (
-	"sync"
+type Application interface {
+	// Register a service provider with the application.
+	Register(provider Provider)
 
-	"github.com/go-fires/fires/config"
-	"github.com/go-fires/fires/container"
-	"github.com/go-fires/fires/contracts/foundation"
-	"github.com/go-fires/fires/foundation/providers"
-)
+	// Boot the applications service providers.
+	Boot()
 
-const Version = "0.0.1"
-
-type Application struct {
-	*container.Container
-
-	providers []foundation.Provider
-	mu        sync.Mutex
-	booted    bool
-}
-
-var _ foundation.Application = (*Application)(nil)
-
-func NewApplication() *Application {
-	app := &Application{
-		Container: container.NewContainer(),
-		providers: make([]foundation.Provider, 10),
-	}
-
-	app.init()
-
-	return app
-}
-
-func (a *Application) init() {
-	a.Container.Instance("app", a)
-
-	SetInstance(a)
-
-	a.registerBaseProviders()
-}
-
-func (a *Application) Version() string {
-	return Version
-}
-
-func (a *Application) Register(provider foundation.Provider) {
-	a.mu.Lock()
-	defer a.mu.Unlock()
-
-	provider.Register()
-
-	a.providers = append(a.providers, provider)
-
-	if a.booted {
-		a.bootProvider(provider)
-	}
-}
-
-func (a *Application) Terminate() {
-	if !a.booted {
-		return
-	}
-
-	for _, p := range a.providers {
-		a.terminateProvider(p)
-	}
-}
-
-func (a *Application) terminateProvider(p foundation.Provider) {
-	if p == nil {
-		return
-	}
-
-	p.Terminate()
-}
-
-func (a *Application) Boot() {
-	if a.booted {
-		return
-	}
-
-	for _, p := range a.providers {
-		a.bootProvider(p)
-	}
-
-	a.booted = true
-}
-
-func (a *Application) bootProvider(provider foundation.Provider) {
-	if provider == nil {
-		return
-	}
-
-	provider.Boot()
-}
-
-func (a *Application) registerBaseProviders() {
-	a.Register(providers.NewConfigProvider(a))
-}
-
-func (a *Application) Configure(name string, value interface{}) {
-	a.Config().Set(name, value)
-}
-
-func (a *Application) Config() *config.Config {
-	var cfg *config.Config
-
-	if a.Make("config", &cfg) != nil {
-		panic("config not found")
-	}
-
-	return cfg
+	// Terminate the application.
+	Terminate()
 }
