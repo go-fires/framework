@@ -2,7 +2,7 @@ package serializer
 
 import (
 	"encoding/json"
-	"github.com/go-fires/framework/contracts/support"
+	"github.com/go-fires/fires/contracts/support"
 )
 
 type JsonSerializer struct {

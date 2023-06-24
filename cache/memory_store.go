@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-fires/framework/contracts/cache"
-	"github.com/go-fires/framework/support/helper"
+	"github.com/go-fires/fires/contracts/cache"
+	"github.com/go-fires/fires/support/helper"
 )
 
 type record struct {

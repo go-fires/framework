@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-fires/framework/contracts/logger"
+	"github.com/go-fires/fires/contracts/logger"
 )
 
 type StdoutConfig struct {

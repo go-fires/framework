@@ -1,7 +1,7 @@
 package event
 
 import (
-	"github.com/go-fires/framework/contracts/event"
+	"github.com/go-fires/fires/contracts/event"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

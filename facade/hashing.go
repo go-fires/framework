@@ -1,7 +1,7 @@
 package facade
 
 import (
-	"github.com/go-fires/framework/hashing"
+	"github.com/go-fires/fires/hashing"
 )
 
 func Hash() *hashing.Manager {

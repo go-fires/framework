@@ -1,14 +1,8 @@
 package recovery
 
-import (
-	"github.com/go-fires/framework/contracts/debug/recovery"
-)
-
-type Handler struct {
-}
-
-var _ recovery.Handler = (*Handler)(nil)
-
-func (p Handler) Report(v interface{}) {
-	panic(v)
+type Handler interface {
+	// The Report the given panic.
+	Report(interface{})
+	// ShouldReport returns true if the given panic should be reported.
+	ShouldReport(interface{}) bool
 }

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/go-fires/framework/contracts/container"
-	"github.com/go-fires/framework/support/helper"
+	"github.com/go-fires/fires/contracts/container"
+	"github.com/go-fires/fires/support/helper"
 )
 
 type binding struct {

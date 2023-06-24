@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/go-fires/framework/contracts/container"
+	"github.com/go-fires/fires/contracts/container"
 	"github.com/stretchr/testify/assert"
 )
 

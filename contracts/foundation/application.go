@@ -1,8 +1,8 @@
 package foundation
 
 import (
-	"github.com/go-fires/framework/config"
-	"github.com/go-fires/framework/contracts/container"
+	"github.com/go-fires/fires/config"
+	"github.com/go-fires/fires/contracts/container"
 )
 
 type Application interface {

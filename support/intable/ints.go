@@ -1,7 +1,7 @@
 package intable
 
 import (
-	"github.com/go-fires/framework/support/strable"
+	"github.com/go-fires/fires/support/strable"
 	"math/rand"
 	"strconv"
 	"strings"

@@ -4,10 +4,10 @@ import (
 	"encoding/base64"
 	"strings"
 
-	"github.com/go-fires/framework/config"
-	"github.com/go-fires/framework/contracts/container"
-	"github.com/go-fires/framework/contracts/foundation"
-	f "github.com/go-fires/framework/foundation"
+	"github.com/go-fires/fires/config"
+	"github.com/go-fires/fires/contracts/container"
+	"github.com/go-fires/fires/contracts/foundation"
+	f "github.com/go-fires/fires/foundation"
 )
 
 const EncrypterName = "encrypter"

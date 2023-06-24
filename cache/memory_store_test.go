@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"github.com/go-fires/framework/support/intable"
+	"github.com/go-fires/fires/support/intable"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

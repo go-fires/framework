@@ -1,8 +1,8 @@
 package providers
 
 import (
-	"github.com/go-fires/framework/config"
-	"github.com/go-fires/framework/contracts/foundation"
+	"github.com/go-fires/fires/config"
+	"github.com/go-fires/fires/contracts/foundation"
 )
 
 type ConfigProvider struct {

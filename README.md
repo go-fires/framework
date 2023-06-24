@@ -1,23 +1,24 @@
-# Go Fires Framework
+# Go Fires
 
-[![Go Version](https://badgen.net/github/release/go-fires/framework/stable)](https://github.com/go-fires/framework/releases)
-[![GoDoc](https://pkg.go.dev/badge/github.com/go-fires/framework)](https://pkg.go.dev/github.com/go-fires/framework)
-[![codecov](https://codecov.io/gh/go-fires/framework/branch/master/graph/badge.svg?token=5TWGQ9DIRU)](https://codecov.io/gh/go-fires/framework)
-[![Go Report Card](https://goreportcard.com/badge/github.com/go-fires/framework)](https://goreportcard.com/report/github.com/go-fires/framework)
-[![tests](https://github.com/go-fires/framework/actions/workflows/go.yml/badge.svg)](https://github.com/go-fires/framework/actions/workflows/go.yml)
+[![Go Version](https://badgen.net/github/release/go-fires/fires/stable)](https://github.com/go-fires/fires/releases)
+[![GoDoc](https://pkg.go.dev/badge/github.com/go-fires/fires)](https://pkg.go.dev/github.com/go-fires/fires)
+[![codecov](https://codecov.io/gh/go-fires/fires/branch/master/graph/badge.svg?token=5TWGQ9DIRU)](https://codecov.io/gh/go-fires/fires)
+[![Go Report Card](https://goreportcard.com/badge/github.com/go-fires/fires)](https://goreportcard.com/report/github.com/go-fires/fires)
+[![tests](https://github.com/go-fires/fires/actions/workflows/go.yml/badge.svg)](https://github.com/go-fires/fires/actions/workflows/go.yml)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
 
 ```bash
-go get github.com/go-fires/framework
+go get github.com/go-fires/fires
 ```
 
-## Usage
+## Components
 
-```go
-// TODO: Write usage instructions
-```
+| Component        | Description          |
+|------------------|----------------------|
+| [Debug](./debug) | Debug component      |
+
 
 ## Analytics
 

@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/go-fires/framework/facade"
+	"github.com/go-fires/fires/facade"
 	"github.com/stretchr/testify/assert"
 )
 

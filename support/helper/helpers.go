@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/go-fires/framework/support/try"
+	"github.com/go-fires/fires/support/try"
 )
 
 // Tap calls the given callback with the given value then returns the value.

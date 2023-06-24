@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"github.com/go-fires/framework/contracts/cache"
+	"github.com/go-fires/fires/contracts/cache"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"

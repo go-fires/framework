@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"github.com/go-fires/framework/facade"
-	"github.com/go-fires/framework/hashing"
+	"github.com/go-fires/fires/facade"
+	"github.com/go-fires/fires/hashing"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
