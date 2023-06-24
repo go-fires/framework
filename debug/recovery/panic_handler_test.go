@@ -6,7 +6,9 @@ import (
 )
 
 func TestPanicHandler_Report(t *testing.T) {
+	p := &PanicHandler{}
+
 	assert.Panics(t, func() {
-		DefaultHandler.Report("test")
+		p.Report("test")
 	})
 }

@@ -1,15 +1,15 @@
 package recovery
 
-type panicHandler struct{}
+type PanicHandler struct{}
 
-var DefaultHandler Handler = &panicHandler{}
+var _ Handler = (*PanicHandler)(nil)
 
-func (p *panicHandler) Report(v interface{}) {
+func (p *PanicHandler) Report(v interface{}) {
 	if p.ShouldReport(v) {
 		panic(v)
 	}
 }
 
-func (p *panicHandler) ShouldReport(v interface{}) bool {
+func (p *PanicHandler) ShouldReport(v interface{}) bool {
 	return true
 }
