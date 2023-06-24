@@ -6,11 +6,11 @@ import (
 )
 
 func TestMd5Hasher(t *testing.T) {
-	md5 := NewMd5Hasher()
-
 	value := "123456"
-	hashedValue, err := md5.Make(value)
+	hashedValue, err := Md5.Make(value)
 
 	assert.Nil(t, err)
-	assert.True(t, md5.Check(value, hashedValue))
+	assert.True(t, Md5.Check(value, hashedValue))
+
+	assert.True(t, Md5.Check(value, Md5.MustMake(value)))
 }
