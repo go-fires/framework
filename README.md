@@ -13,11 +13,12 @@
 go get github.com/go-fires/fires
 ```
 
-## Usage
+## Components
 
-```go
-// TODO: Write usage instructions
-```
+| Component        | Description          |
+|------------------|----------------------|
+| [Debug](./debug) | Debug component      |
+
 
 ## Analytics
 
