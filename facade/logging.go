@@ -2,7 +2,7 @@ package facade
 
 import (
 	"github.com/go-fires/fires/contracts/logger"
-	"github.com/go-fires/fires/logging"
+	"github.com/go-fires/fires/x/logging"
 )
 
 func Logging() *logging.Manager {

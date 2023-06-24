@@ -1,7 +1,9 @@
 package facade
 
-import "github.com/go-fires/fires/redis"
+import (
+	redis2 "github.com/go-fires/fires/x/redis"
+)
 
-func Redis() *redis.Manager {
-	return App().MustGet(redis.Redis).(*redis.Manager)
+func Redis() *redis2.Manager {
+	return App().MustGet(redis2.Redis).(*redis2.Manager)
 }
