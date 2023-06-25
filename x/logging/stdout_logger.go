@@ -2,23 +2,22 @@ package logging
 
 import (
 	"fmt"
+	logger2 "github.com/go-fires/fires/x/contracts/logger"
 	"time"
-
-	"github.com/go-fires/fires/contracts/logger"
 )
 
 type StdoutConfig struct {
 }
 
 type StdoutLogger struct {
-	logger.Loggerable
+	logger2.Loggerable
 }
 
-var _ logger.Logger = (*StdoutLogger)(nil)
+var _ logger2.Logger = (*StdoutLogger)(nil)
 
 func NewStdoutLogger(name string) *StdoutLogger {
 	return &StdoutLogger{
-		Loggerable: func(level logger.Level, message string) {
+		Loggerable: func(level logger2.Level, message string) {
 			fmt.Printf(
 				"[%s] %s.%s: %s\n",
 				time.Now().Format("2006-01-02 15:04:05"),

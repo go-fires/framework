@@ -22,7 +22,7 @@ const (
 	EB
 )
 
-// Bytes returns the size in bytes
+// Bytes return the size in bytes
 func (s Size) Bytes() uint64 {
 	return uint64(s)
 }
@@ -112,7 +112,7 @@ func (s Size) String() string {
 	return s.BString()
 }
 
-// format formats the size
+// Format formats the size
 func format(yb float64, s string) string {
 	return fmt.Sprintf("%.02f %s", yb, s)
 }

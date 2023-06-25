@@ -1,21 +1,21 @@
 package cache
 
 import (
-	"github.com/go-fires/fires/contracts/cache"
 	"github.com/go-fires/fires/support/helper"
+	cache2 "github.com/go-fires/fires/x/contracts/cache"
 	"sync"
 	"time"
 )
 
 type Repository struct {
-	cache.Store
+	cache2.Store
 
 	mu sync.Mutex
 }
 
-var _ cache.Repository = (*Repository)(nil)
+var _ cache2.Repository = (*Repository)(nil)
 
-func NewRepository(store cache.Store) *Repository {
+func NewRepository(store cache2.Store) *Repository {
 	return &Repository{
 		Store: store,
 	}
@@ -26,7 +26,7 @@ func (r *Repository) Missing(key string) bool {
 }
 
 func (r *Repository) Pull(key string, value interface{}) error {
-	if s, ok := r.Store.(cache.StorePullable); ok {
+	if s, ok := r.Store.(cache2.StorePullable); ok {
 		return s.Pull(key, value)
 	}
 
@@ -38,7 +38,7 @@ func (r *Repository) Pull(key string, value interface{}) error {
 	case error:
 		return value.(error)
 	default:
-		return cache.ErrUnknown
+		return cache2.ErrUnknown
 	}
 }
 
@@ -48,7 +48,7 @@ func (r *Repository) Set(key string, value interface{}, ttl time.Duration) bool 
 
 func (r *Repository) Add(key string, value interface{}, ttl time.Duration) bool {
 	// if the store supports the add method, we'll just call that and return
-	if s, ok := r.Store.(cache.StoreAddable); ok {
+	if s, ok := r.Store.(cache2.StoreAddable); ok {
 		return s.Add(key, value, ttl)
 	}
 

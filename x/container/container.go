@@ -2,9 +2,9 @@ package container
 
 import (
 	"fmt"
+	"github.com/go-fires/fires/x/contracts/container"
 	"sync"
 
-	"github.com/go-fires/fires/contracts/container"
 	"github.com/go-fires/fires/support/helper"
 )
 

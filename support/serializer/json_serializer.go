@@ -2,18 +2,14 @@ package serializer
 
 import (
 	"encoding/json"
-	"github.com/go-fires/fires/contracts/support"
 )
 
-type JsonSerializer struct {
-}
+type JsonSerializer struct{}
 
-var _ support.Serializable = (*JsonSerializer)(nil)
-
-func (serializer *JsonSerializer) Serialize(data interface{}) ([]byte, error) {
+func (s *JsonSerializer) Serialize(data interface{}) ([]byte, error) {
 	return json.Marshal(data)
 }
 
-func (serializer *JsonSerializer) Unserialize(src []byte, dest interface{}) error {
+func (s *JsonSerializer) Unserialize(src []byte, dest interface{}) error {
 	return json.Unmarshal(src, dest)
 }

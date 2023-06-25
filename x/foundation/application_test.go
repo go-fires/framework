@@ -2,9 +2,9 @@ package foundation
 
 import (
 	"fmt"
+	"github.com/go-fires/fires/x/contracts/container"
 	"testing"
 
-	"github.com/go-fires/fires/contracts/container"
 	"github.com/stretchr/testify/assert"
 )
 

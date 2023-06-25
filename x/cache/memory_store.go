@@ -1,10 +1,10 @@
 package cache
 
 import (
+	cache2 "github.com/go-fires/fires/x/contracts/cache"
 	"sync"
 	"time"
 
-	"github.com/go-fires/fires/contracts/cache"
 	"github.com/go-fires/fires/support/helper"
 )
 
@@ -58,7 +58,7 @@ func NewMemoryStore(config *MemoryStoreConfig) *MemoryStore {
 	return m
 }
 
-var _ cache.Store = (*MemoryStore)(nil)
+var _ cache2.Store = (*MemoryStore)(nil)
 
 func (m *MemoryStore) Has(key string) bool {
 	if v, ok := m.records.Load(key); ok {
@@ -82,7 +82,7 @@ func (m *MemoryStore) Get(key string, value interface{}) error {
 		}
 	}
 
-	return cache.ErrKeyNotFound
+	return cache2.ErrKeyNotFound
 }
 
 // Put puts a value into the cache for a given number of minutes.

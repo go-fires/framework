@@ -2,10 +2,10 @@ package cache
 
 import (
 	"context"
+	"github.com/go-fires/fires/x/contracts/cache"
+	"github.com/go-fires/fires/x/contracts/support"
 	"time"
 
-	"github.com/go-fires/fires/contracts/cache"
-	"github.com/go-fires/fires/contracts/support"
 	"github.com/go-fires/fires/support/serializer"
 	"github.com/redis/go-redis/v9"
 )
