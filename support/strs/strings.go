@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"crypto/sha1"
 	"fmt"
-	"github.com/satori/go.uuid"
+	"github.com/google/uuid"
 	"math/rand"
 	"regexp"
 	"strings"
@@ -320,8 +320,8 @@ func Trim(str string) string {
 	return strings.TrimSpace(str)
 }
 
-// IsUuid returns true if the string is a valid UUID.
-func IsUuid(str string) bool {
+// IsUUID returns true if the string is a valid UUID.
+func IsUUID(str string) bool {
 	pattern := "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
 	match, err := regexp.MatchString(pattern, str)
 
@@ -332,9 +332,9 @@ func IsUuid(str string) bool {
 	return match
 }
 
-// Uuid returns a UUID.
-func Uuid() string {
-	return uuid.NewV4().String()
+// UUID returns a UUID.
+func UUID() string {
+	return uuid.New().String()
 }
 
 // ReplaceLast replaces the last occurrence of a string.
