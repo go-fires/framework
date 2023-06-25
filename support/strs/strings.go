@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"crypto/sha1"
 	"fmt"
+	"github.com/go-fires/fires/generator/id/uuid"
 	"math/rand"
 	"regexp"
 	"strings"
@@ -326,4 +327,8 @@ func IsUuid(str string) bool {
 	}
 
 	return match
+}
+
+func Uuid() string {
+	return uuid.Generate()
 }

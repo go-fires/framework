@@ -139,3 +139,8 @@ func TestIsUuid(t *testing.T) {
 	assert.False(t, IsUuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf"))
 	assert.False(t, IsUuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6a"))
 }
+
+func TestUuid(t *testing.T) {
+	assert.Equal(t, 36, len(Uuid()))
+	assert.True(t, IsUuid(Uuid()))
+}

@@ -7,6 +7,7 @@ require (
 	github.com/golang-module/carbon/v2 v2.2.3
 	github.com/joho/godotenv v1.5.1
 	github.com/redis/go-redis/v9 v9.0.3
+	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.2
 	golang.org/x/crypto v0.8.0
