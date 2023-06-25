@@ -181,7 +181,7 @@ func TestRepository_Clear(t *testing.T) {
 		store cache.Store
 	}{
 		{"redis", createMemoryStore()},
-		// {"memory", createRedisStore()},
+		{"redis", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			r := cache.NewRepository(tt.store)
