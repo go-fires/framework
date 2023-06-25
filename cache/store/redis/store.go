@@ -15,7 +15,7 @@ type Store struct {
 
 	prefix     string
 	context    context.Context
-	serializer serializer.Serializable
+	serializer serializer.Serializer
 }
 
 var _ cache.Store = (*Store)(nil)
@@ -25,7 +25,7 @@ var _ cache.StorePullable = (*Store)(nil) // Support for pull method
 func New(redis redis.Cmdable, opts ...Option) *Store {
 	s := &Store{
 		redis:      redis,
-		serializer: &serializer.JsonSerializer{},
+		serializer: serializer.JsonSerializer,
 		context:    context.Background(),
 	}
 
@@ -42,7 +42,7 @@ func WithPrefix(prefix string) Option {
 	}
 }
 
-func WithSerializer(serializer serializer.Serializable) Option {
+func WithSerializer(serializer serializer.Serializer) Option {
 	return func(s *Store) {
 		if serializer == nil {
 			return

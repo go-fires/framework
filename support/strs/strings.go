@@ -4,10 +4,11 @@ import (
 	"crypto/md5"
 	"crypto/sha1"
 	"fmt"
-	"github.com/go-fires/fires/generator/id/uuid"
+	"github.com/satori/go.uuid"
 	"math/rand"
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 // Is returns true if the value matches the pattern.
@@ -142,6 +143,29 @@ func Shuffle(s string) string {
 	return strings.Join(ss, "")
 }
 
+// randomLetters is the letters used in RandomString.
+const randomLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+var (
+	randomLettersRunes       = []rune(randomLetters)
+	randomLettersRunesLength = len(randomLetters)
+)
+
+// RandomString returns a random string with the specified length.
+//
+// Example:
+//
+//	RandomString(10) // "qujrlkhyqr"
+func RandomString(length int) string {
+	b := make([]rune, length)
+
+	for i := range b {
+		b[i] = randomLettersRunes[rand.Intn(randomLettersRunesLength)]
+	}
+
+	return string(b)
+}
+
 // StrPadType is the type of padding.
 type StrPadType int
 
@@ -151,27 +175,6 @@ const (
 	StrPadRight
 	StrPadBoth
 )
-
-// randomStringLetters is the letters used in RandomString.
-const randomStringLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-// RandomString returns a random string with the specified length.
-//
-// Example:
-//
-//	RandomString(10) // "qujrlkhyqr"
-func RandomString(length int) string {
-	var letters = []rune(randomStringLetters)
-	var lettersLength = len(letters)
-
-	b := make([]rune, length)
-
-	for i := range b {
-		b[i] = letters[rand.Intn(lettersLength)]
-	}
-
-	return string(b)
-}
 
 // StrPad returns an input string padded on the left or right to specified length with pad string.
 //
@@ -217,7 +220,7 @@ func Len(s string) int {
 }
 
 // Strcut returns a string with a specified length starting from a specified position.
-// support chinese characters.
+// Support chinese characters.
 //
 // Example:
 //
@@ -329,6 +332,55 @@ func IsUuid(str string) bool {
 	return match
 }
 
+// Uuid returns a UUID.
 func Uuid() string {
-	return uuid.Generate()
+	return uuid.NewV4().String()
+}
+
+// ReplaceLast replaces the last occurrence of a string.
+//
+// Example:
+//
+//	ReplaceLast("abc", "c", "d") // "abd"
+//	ReplaceLast("abc", "d", "e") // "abc"
+func ReplaceLast(str, old, new string) string {
+	if old == "" {
+		return str
+	}
+
+	if pos := strings.LastIndex(str, old); pos == -1 {
+		return str
+	} else {
+		return str[:pos] + new + str[pos+len(old):]
+	}
+}
+
+// Snake converts a string to snake case.
+//
+// Example:
+//
+//	Snake("FooBar") // "foo_bar"
+//	Snake("FooBar", "--") // "foo--bar"
+func Snake(value string, delimiter ...string) string {
+	del := "_"
+
+	if len(delimiter) > 0 {
+		del = delimiter[0]
+	}
+
+	value = regexp.MustCompile(`\s+`).ReplaceAllString(strings.Title(value), "")
+
+	var b strings.Builder
+	for i, r := range value {
+		if unicode.IsUpper(r) {
+			if i > 0 {
+				b.WriteString(del)
+			}
+			b.WriteRune(unicode.ToLower(r))
+		} else {
+			b.WriteRune(r)
+		}
+	}
+
+	return b.String()
 }

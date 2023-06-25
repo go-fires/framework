@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 )
 
-type JsonSerializer struct{}
+var JsonSerializer Serializer = &jsonSerializer{}
 
-func (s *JsonSerializer) Serialize(data interface{}) ([]byte, error) {
+type jsonSerializer struct{}
+
+func (s *jsonSerializer) Serialize(data interface{}) ([]byte, error) {
 	return json.Marshal(data)
 }
 
-func (s *JsonSerializer) Unserialize(src []byte, dest interface{}) error {
+func (s *jsonSerializer) Unserialize(src []byte, dest interface{}) error {
 	return json.Unmarshal(src, dest)
 }

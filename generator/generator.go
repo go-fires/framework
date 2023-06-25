@@ -1,5 +1,5 @@
 package generator
 
-type IDGenerator interface {
+type Generator interface {
 	Generate() string
 }
