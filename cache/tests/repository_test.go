@@ -15,9 +15,12 @@ func createMemoryStore() *memory.Store {
 }
 
 func createRedisStore() *redis.Store {
-	return redis.New(rds.NewClient(&rds.Options{
+	rdb := redis.New(rds.NewClient(&rds.Options{
 		Addr: "localhost:6379",
 	}))
+	defer rdb.Flush()
+
+	return rdb
 }
 
 func TestRepository_Base(t *testing.T) {
@@ -137,7 +140,7 @@ func TestRepository_RememberForever(t *testing.T) {
 		store cache.Store
 	}{
 		{"memory", createMemoryStore()},
-		// {"memory", createRedisStore()},
+		{"redis", createRedisStore()},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			r := cache.NewRepository(tt.store)

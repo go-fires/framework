@@ -62,10 +62,15 @@ func (s *Store) Put(key string, value interface{}, ttl time.Duration) error {
 	s.rw.Lock()
 	defer s.rw.Unlock()
 
-	s.items[key] = &item{
-		value:   value,
-		expired: time.Now().Add(ttl),
+	i := &item{
+		value: value,
 	}
+
+	if ttl > 0 {
+		i.expired = time.Now().Add(ttl)
+	}
+
+	s.items[key] = i
 
 	return nil
 }
