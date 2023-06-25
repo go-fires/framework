@@ -18,9 +18,13 @@ go get github.com/go-fires/fires
 | Component                  | Description          |
 |----------------------------|----------------------|
 | [Foundation](./foundation) | Foundation component |
+| [Cache](./cache)           | Cache component      |
 | [Debug](./debug)           | Debug component      |
 | [Hashing](./hashing)       | Hashing component    |
 | [Encryption](./encryption) | Encryption component |
+| [Support](./support)       | Support component    |
+| [Context](./context)       | Context component    |
+| [Serializer](./serializer) | Serializer component |
 
 
 ## Analytics
