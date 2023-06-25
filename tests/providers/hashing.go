@@ -3,6 +3,7 @@ package providers
 import (
 	f "github.com/go-fires/fires/foundation"
 	"github.com/go-fires/fires/hashing"
+	"github.com/go-fires/fires/hashing/md5"
 	"github.com/go-fires/fires/tests/foundation"
 	"sync"
 )
@@ -24,7 +25,7 @@ func NewHashingProvider(app *foundation.Application) *HashingProvider {
 func (p *HashingProvider) Register() {
 	p.app.Hasher = func() hashing.Hasher {
 		p.once.Do(func() {
-			p.hasher = hashing.Md5
+			p.hasher = md5.New()
 		})
 
 		return p.hasher

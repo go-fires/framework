@@ -9,6 +9,6 @@ type Hasher interface {
 	MustMake(value string) string
 
 	// Check the given value matches the given hashed value.
-	// If Make() is error, it will return false.
+	// If you Make() is error, it will return false.
 	Check(value, hashedValue string) bool
 }
