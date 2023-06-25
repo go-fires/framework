@@ -1,16 +1,16 @@
 package logging
 
 import (
-	"github.com/go-fires/fires/contracts/container"
-	"github.com/go-fires/fires/contracts/foundation"
+	"github.com/go-fires/fires/x/contracts/container"
+	foundation2 "github.com/go-fires/fires/x/contracts/foundation"
 )
 
 type Provider struct {
-	app foundation.Application
-	*foundation.UnimplementedProvider
+	app foundation2.Application
+	*foundation2.UnimplementedProvider
 }
 
-func NewProvider(app foundation.Application) *Provider {
+func NewProvider(app foundation2.Application) *Provider {
 	return &Provider{
 		app: app,
 	}

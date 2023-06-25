@@ -1,21 +1,21 @@
 package redis
 
 import (
-	"github.com/go-fires/fires/contracts/container"
-	"github.com/go-fires/fires/contracts/foundation"
+	"github.com/go-fires/fires/x/contracts/container"
+	foundation2 "github.com/go-fires/fires/x/contracts/foundation"
 )
 
 const Redis = "redis"
 
 type Provider struct {
-	app foundation.Application
+	app foundation2.Application
 
-	*foundation.UnimplementedProvider
+	*foundation2.UnimplementedProvider
 }
 
-var _ foundation.Provider = (*Provider)(nil)
+var _ foundation2.Provider = (*Provider)(nil)
 
-func NewProvider(app foundation.Application) *Provider {
+func NewProvider(app foundation2.Application) *Provider {
 	return &Provider{
 		app: app,
 	}

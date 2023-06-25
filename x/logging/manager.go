@@ -1,33 +1,32 @@
 package logging
 
 import (
+	logger2 "github.com/go-fires/fires/x/contracts/logger"
 	"sync"
-
-	"github.com/go-fires/fires/contracts/logger"
 )
 
 type Manager struct {
 	config   *Config
-	resolved map[string]logger.Logger
+	resolved map[string]logger2.Logger
 	mu       sync.Mutex
 
-	logger.Loggerable
+	logger2.Loggerable
 }
 
 func NewManager(config *Config) *Manager {
 	m := &Manager{
 		config:   config,
-		resolved: make(map[string]logger.Logger),
+		resolved: make(map[string]logger2.Logger),
 	}
 
-	m.Loggerable = func(level logger.Level, s string) {
+	m.Loggerable = func(level logger2.Level, s string) {
 		m.Channel().Log(level, s)
 	}
 
 	return m
 }
 
-func (m *Manager) Channel(names ...string) logger.Logger {
+func (m *Manager) Channel(names ...string) logger2.Logger {
 	var name string
 	if len(names) > 0 {
 		name = names[0]
@@ -38,7 +37,7 @@ func (m *Manager) Channel(names ...string) logger.Logger {
 	return m.Get(name)
 }
 
-func (m *Manager) Get(name string) logger.Logger {
+func (m *Manager) Get(name string) logger2.Logger {
 	if logging, ok := m.resolved[name]; ok {
 		return logging
 	}
@@ -52,7 +51,7 @@ func (m *Manager) Get(name string) logger.Logger {
 	return logging
 }
 
-func (m *Manager) resolve(name string) logger.Logger {
+func (m *Manager) resolve(name string) logger2.Logger {
 	if log, ok := m.config.Channels[name]; ok {
 		return log
 	}

@@ -2,18 +2,18 @@ package providers
 
 import (
 	"github.com/go-fires/fires/config"
-	"github.com/go-fires/fires/contracts/foundation"
+	foundation2 "github.com/go-fires/fires/x/contracts/foundation"
 )
 
 type ConfigProvider struct {
-	app foundation.Application
+	app foundation2.Application
 
-	*foundation.UnimplementedProvider
+	*foundation2.UnimplementedProvider
 }
 
-var _ foundation.Provider = (*ConfigProvider)(nil)
+var _ foundation2.Provider = (*ConfigProvider)(nil)
 
-func NewConfigProvider(app foundation.Application) *ConfigProvider {
+func NewConfigProvider(app foundation2.Application) *ConfigProvider {
 	return &ConfigProvider{
 		app: app,
 	}

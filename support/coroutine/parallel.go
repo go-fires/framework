@@ -24,10 +24,12 @@ func (p *Parallel) Wait() {
 	defer p.wg.Wait()
 
 	for _, fn := range p.callbacks {
+		var f = fn
+
 		p.concurrent.Run(func() {
 			defer p.wg.Done()
 
-			fn()
+			f()
 		})
 	}
 }

@@ -12,6 +12,7 @@ func TestConcurrent(t *testing.T) {
 	t.Skip("skipping test in race mode.")
 
 	c := NewConcurrent(10)
+	defer c.Close()
 
 	var (
 		start = time.Now()

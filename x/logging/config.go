@@ -1,6 +1,8 @@
 package logging
 
-import "github.com/go-fires/fires/contracts/logger"
+import (
+	"github.com/go-fires/fires/x/contracts/logger"
+)
 
 type Config struct {
 	Default string

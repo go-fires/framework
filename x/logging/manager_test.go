@@ -1,9 +1,8 @@
 package logging
 
 import (
+	"github.com/go-fires/fires/x/contracts/logger"
 	"testing"
-
-	"github.com/go-fires/fires/contracts/logger"
 )
 
 func TestManager(t *testing.T) {

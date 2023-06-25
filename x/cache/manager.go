@@ -1,12 +1,12 @@
 package cache
 
 import (
+	cache2 "github.com/go-fires/fires/x/contracts/cache"
+	"github.com/go-fires/fires/x/contracts/container"
 	"github.com/go-fires/fires/x/redis"
 	"sync"
 
 	"github.com/go-fires/fires/config"
-	"github.com/go-fires/fires/contracts/cache"
-	"github.com/go-fires/fires/contracts/container"
 )
 
 type Manager struct {
@@ -14,20 +14,20 @@ type Manager struct {
 	config    *Config
 	mu        sync.Mutex
 
-	stores map[string]cache.Repository
+	stores map[string]cache2.Repository
 }
 
 func NewManager(container container.Container) *Manager {
 	m := &Manager{
 		container: container,
 		config:    container.MustGet("config").(*config.Config).Get("cache").(*Config),
-		stores:    make(map[string]cache.Repository),
+		stores:    make(map[string]cache2.Repository),
 	}
 
 	return m
 }
 
-func (m *Manager) Store(names ...string) cache.Repository {
+func (m *Manager) Store(names ...string) cache2.Repository {
 	var name string
 	if len(names) > 0 {
 		name = names[0]
@@ -38,7 +38,7 @@ func (m *Manager) Store(names ...string) cache.Repository {
 	return m.store(name)
 }
 
-func (m *Manager) store(name string) cache.Repository {
+func (m *Manager) store(name string) cache2.Repository {
 	if store, ok := m.stores[name]; ok {
 		return store
 	}
@@ -51,7 +51,7 @@ func (m *Manager) store(name string) cache.Repository {
 	return m.stores[name]
 }
 
-func (m *Manager) resolve(name string) cache.Repository {
+func (m *Manager) resolve(name string) cache2.Repository {
 	cfg, ok := m.config.Stores[name]
 	if !ok {
 		panic("cache store not found")
@@ -67,11 +67,11 @@ func (m *Manager) resolve(name string) cache.Repository {
 	}
 }
 
-func (m *Manager) createMemoryStore(config *MemoryStoreConfig) cache.Repository {
+func (m *Manager) createMemoryStore(config *MemoryStoreConfig) cache2.Repository {
 	return m.repository(NewMemoryStore(config))
 }
 
-func (m *Manager) createRedisStore(config *RedisStoreConfig) cache.Repository {
+func (m *Manager) createRedisStore(config *RedisStoreConfig) cache2.Repository {
 	return m.repository(
 		NewRedisStore(
 			m.container.MustGet("redis").(*redis.Manager).Connect(config.GetConnection()),
@@ -81,7 +81,7 @@ func (m *Manager) createRedisStore(config *RedisStoreConfig) cache.Repository {
 	)
 }
 
-func (m *Manager) repository(store cache.Store) cache.Repository {
+func (m *Manager) repository(store cache2.Store) cache2.Repository {
 	return NewRepository(store)
 }
 

@@ -1,7 +1,7 @@
 package event
 
 import (
-	"github.com/go-fires/fires/contracts/event"
+	event2 "github.com/go-fires/fires/x/contracts/event"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,10 +12,10 @@ type testEvent struct {
 	Stoped bool
 }
 
-var _ event.Event = (*testEvent)(nil)
-var _ event.StoppableEvent = (*testEvent)(nil)
+var _ event2.Event = (*testEvent)(nil)
+var _ event2.StoppableEvent = (*testEvent)(nil)
 
-func newTestEvent(name string) event.Event {
+func newTestEvent(name string) event2.Event {
 	return &testEvent{name: name}
 }
 
@@ -36,9 +36,9 @@ type Test1Listener struct {
 	stop bool
 }
 
-var _ event.Listener = (*Test1Listener)(nil)
+var _ event2.Listener = (*Test1Listener)(nil)
 
-func (t *Test1Listener) Handle(event event.Event) {
+func (t *Test1Listener) Handle(event event2.Event) {
 	t.Val = "Test1 Done"
 
 	if t.stop {
@@ -54,9 +54,9 @@ type Test2Listener struct {
 	Val string
 }
 
-var _ event.Listener = (*Test2Listener)(nil)
+var _ event2.Listener = (*Test2Listener)(nil)
 
-func (t *Test2Listener) Handle(event event.Event) {
+func (t *Test2Listener) Handle(event event2.Event) {
 	t.Val = "Test2 Done"
 }
 
@@ -126,7 +126,7 @@ func TestDispatcher_ListenerFunc(t *testing.T) {
 
 	event1 := newTestEvent("test1")
 
-	d.Listen("test1", event.ListenerFunc(func(event event.Event) {
+	d.Listen("test1", event2.ListenerFunc(func(event event2.Event) {
 		assert.Equal(t, event1, event)
 	}))
 }
