@@ -2,7 +2,7 @@ package generator
 
 import "github.com/google/uuid"
 
-var UUIDGenerator Generator = &uuidGenerator{}
+var UUID Generator = &uuidGenerator{}
 
 type uuidGenerator struct{}
 

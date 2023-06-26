@@ -67,7 +67,7 @@ func (c *Client) init() {
 	}
 
 	if c.serializer == nil {
-		c.serializer = serializer.JsonSerializer
+		c.serializer = serializer.Json
 	}
 
 	if c.pathGenerator == nil {
@@ -75,7 +75,7 @@ func (c *Client) init() {
 	}
 
 	if c.idGenerator == nil {
-		c.idGenerator = generator.UUIDGenerator
+		c.idGenerator = generator.UUID
 	}
 }
 

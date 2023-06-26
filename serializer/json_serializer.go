@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-var JsonSerializer Serializer = &jsonSerializer{}
+var Json Serializer = &jsonSerializer{}
 
 type jsonSerializer struct{}
 

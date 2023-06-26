@@ -2,7 +2,7 @@ package generator
 
 import "github.com/go-fires/fires/support/strs"
 
-var RandomGenerator Generator = &randomGenerator{}
+var Random Generator = &randomGenerator{}
 
 type randomGenerator struct{}
 

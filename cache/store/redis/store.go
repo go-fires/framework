@@ -25,7 +25,7 @@ var _ cache.StorePullable = (*Store)(nil) // Support for pull method
 func New(redis redis.Cmdable, opts ...Option) *Store {
 	s := &Store{
 		redis:      redis,
-		serializer: serializer.JsonSerializer,
+		serializer: serializer.Json,
 		context:    context.Background(),
 	}
 

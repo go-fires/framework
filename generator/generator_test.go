@@ -6,13 +6,13 @@ import (
 )
 
 func TestUUIDGenerator(t *testing.T) {
-	fmt.Println(UUIDGenerator.Generate())
-	fmt.Println(UUIDGenerator.Generate())
-	fmt.Println(UUIDGenerator.Generate())
+	fmt.Println(UUID.Generate())
+	fmt.Println(UUID.Generate())
+	fmt.Println(UUID.Generate())
 }
 
 func TestRandomGenerator(t *testing.T) {
-	fmt.Println(RandomGenerator.Generate())
-	fmt.Println(RandomGenerator.Generate())
-	fmt.Println(RandomGenerator.Generate())
+	fmt.Println(Random.Generate())
+	fmt.Println(Random.Generate())
+	fmt.Println(Random.Generate())
 }
