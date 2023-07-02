@@ -1,7 +1,6 @@
 package strs
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
@@ -160,40 +159,6 @@ func TestReplaceLast(t *testing.T) {
 	assert.Equal(t, "我是中国人", ReplaceLast("我是中国人", "", "yyy"))
 }
 
-func TestSnake(t *testing.T) {
-	// $this->assertSame('laravel_p_h_p_component', Str::snake('LaravelGOFramework'));
-	// $this->assertSame('laravel_php_framework', Str::snake('LaravelGoFramework'));
-	// $this->assertSame('laravel php framework', Str::snake('LaravelPhpFramework', ' '));
-	// $this->assertSame('laravel_php_framework', Str::snake('Laravel Php Framework'));
-	// $this->assertSame('laravel_php_framework', Str::snake('Laravel    Php      Framework   '));
-	// // ensure cache keys don't overlap
-	// $this->assertSame('laravel__php__framework', Str::snake('LaravelPhpFramework', '__'));
-	// $this->assertSame('laravel_php_framework_', Str::snake('LaravelPhpFramework_', '_'));
-	// $this->assertSame('laravel_php_framework', Str::snake('laravel php Framework'));
-	// $this->assertSame('laravel_php_frame_work', Str::snake('laravel php FrameWork'));
-	// // prevent breaking changes
-	// $this->assertSame('foo-bar', Str::snake('foo-bar'));
-	// $this->assertSame('foo-_bar', Str::snake('Foo-Bar'));
-	// $this->assertSame('foo__bar', Str::snake('Foo_Bar'));
-	// $this->assertSame('żółtałódka', Str::snake('ŻółtaŁódka'));
-
-	fmt.Println(strings.Title("foo-bar"))
-
-	assert.Equal(t, "fires_g_o_component", Snake("FiresGOComponent"))
-	assert.Equal(t, "fires_go_component", Snake("FiresGoComponent"))
-	assert.Equal(t, "fires go component", Snake("FiresGoComponent", " "))
-	assert.Equal(t, "fires_go_component", Snake("Fires Go Component"))
-	assert.Equal(t, "fires_go_component", Snake("Fires    Go      Component   "))
-	assert.Equal(t, "fires__go__component", Snake("FiresGoComponent", "__"))
-	assert.Equal(t, "fires_go_component_", Snake("FiresGoComponent_", "_"))
-	assert.Equal(t, "fires_go_component", Snake("fires go Component"))
-	assert.Equal(t, "fires_go_more_component", Snake("fires go MoreComponent"))
-	assert.Equal(t, "foo-bar", Snake("foo-bar"))
-	assert.Equal(t, "foo-_bar", Snake("Foo-Bar"))
-	assert.Equal(t, "foo__bar", Snake("Foo_Bar"))
-	assert.Equal(t, "żółtałódka", Snake("ŻółtaŁódka"))
-}
-
 func TestSSS(t *testing.T) {
 	tests := []struct {
 		name string
@@ -230,4 +195,14 @@ func TestSSS(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestLowerFirst(t *testing.T) {
+	assert.Equal(t, "foo", LowerFirst("Foo"))
+	assert.Equal(t, "foo", LowerFirst("foo"))
+	assert.Equal(t, "f", LowerFirst("F"))
+	assert.Equal(t, "", LowerFirst(""))
+	assert.Equal(t, "1", LowerFirst("1"))
+	assert.Equal(t, "中国", LowerFirst("中国"))
+	assert.Equal(t, "żółtałódka", LowerFirst("żółtałódka"))
 }

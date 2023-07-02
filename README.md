@@ -15,16 +15,18 @@ go get github.com/go-fires/fires
 
 ## Components
 
-| Component                  | Description          |
-|----------------------------|----------------------|
-| [Foundation](./foundation) | Foundation component |
-| [Cache](./cache)           | Cache component      |
-| [Debug](./debug)           | Debug component      |
-| [Hashing](./hashing)       | Hashing component    |
-| [Encryption](./encryption) | Encryption component |
-| [Support](./support)       | Support component    |
-| [Context](./context)       | Context component    |
-| [Serializer](./serializer) | Serializer component |
+| Component                  | Description                  |
+|----------------------------|------------------------------|
+| [Foundation](./foundation) | Foundation component         |
+| [Cache](./cache)           | Cache component              |
+| [Debug](./debug)           | Debug component              |
+| [Hashing](./hashing)       | Hashing component            |
+| [Encryption](./encryption) | Encryption component         |
+| [Support](./support)       | Support component            |
+| [Context](./context)       | Context component            |
+| [Serializer](./serializer) | Serializer component         |
+| [Generator](./generator)   | Generator component          |
+| [Jet](./jet)               | Jet component for RPC Client |
 
 
 ## Analytics

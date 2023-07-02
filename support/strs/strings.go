@@ -355,32 +355,28 @@ func ReplaceLast(str, old, new string) string {
 	}
 }
 
-// Snake converts a string to snake case.
-//
-// Example:
-//
-//	Snake("FooBar") // "foo_bar"
-//	Snake("FooBar", "--") // "foo--bar"
-func Snake(value string, delimiter ...string) string {
-	del := "_"
+// LowerFirst returns a string with the first character in uppercase.
+func LowerFirst(str string) string {
+	rs := []rune(str)
 
-	if len(delimiter) > 0 {
-		del = delimiter[0]
+	if len(rs) < 1 {
+		return str
 	}
 
-	value = regexp.MustCompile(`\s+`).ReplaceAllString(strings.Title(value), "")
+	rs[0] = unicode.ToLower(rs[0])
 
-	var b strings.Builder
-	for i, r := range value {
-		if unicode.IsUpper(r) {
-			if i > 0 {
-				b.WriteString(del)
-			}
-			b.WriteRune(unicode.ToLower(r))
-		} else {
-			b.WriteRune(r)
-		}
+	return string(rs)
+}
+
+// UpperFirst returns a string with the first character in uppercase.
+func UpperFirst(str string) string {
+	rs := []rune(str)
+
+	if len(rs) < 1 {
+		return str
 	}
 
-	return b.String()
+	rs[0] = unicode.ToUpper(rs[0])
+
+	return string(rs)
 }
