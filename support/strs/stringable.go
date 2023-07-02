@@ -107,7 +107,7 @@ func (s String) Trim() string {
 	return Trim(s.String())
 }
 
-// IsUuid returns true if the string is a valid uuid.
-func (s String) IsUuid() bool {
-	return IsUuid(s.String())
+// IsUUID returns true if the string is a valid uuid.
+func (s String) IsUUID() bool {
+	return IsUUID(s.String())
 }

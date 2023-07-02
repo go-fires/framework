@@ -2,7 +2,9 @@ package strs
 
 import (
 	"github.com/stretchr/testify/assert"
+	"strings"
 	"testing"
+	"unicode"
 )
 
 func TestIs(t *testing.T) {
@@ -135,12 +137,72 @@ func TestTrim(t *testing.T) {
 }
 
 func TestIsUuid(t *testing.T) {
-	assert.True(t, IsUuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"))
-	assert.False(t, IsUuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf"))
-	assert.False(t, IsUuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6a"))
+	assert.True(t, IsUUID("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"))
+	assert.False(t, IsUUID("f81d4fae-7dec-11d0-a765-00a0c91e6bf"))
+	assert.False(t, IsUUID("f81d4fae-7dec-11d0-a765-00a0c91e6bf6a"))
 }
 
 func TestUuid(t *testing.T) {
-	assert.Equal(t, 36, len(Uuid()))
-	assert.True(t, IsUuid(Uuid()))
+	assert.Equal(t, 36, len(UUID()))
+	assert.True(t, IsUUID(UUID()))
+}
+
+func TestReplaceLast(t *testing.T) {
+	assert.Equal(t, "foobar fooqux", ReplaceLast("foobar foobar", "bar", "qux"))
+	assert.Equal(t, "foo/bar? foo/qux?", ReplaceLast("foo/bar? foo/bar?", "bar?", "qux?"))
+	assert.Equal(t, "foobar foo", ReplaceLast("foobar foobar", "bar", ""))
+	assert.Equal(t, "foobar foobar", ReplaceLast("foobar foobar", "xxx", "yyy"))
+	assert.Equal(t, "foobar foobar", ReplaceLast("foobar foobar", "", "yyy"))
+	assert.Equal(t, "Malmö Jönkxxxping", ReplaceLast("Malmö Jönköping", "ö", "xxx"))
+	assert.Equal(t, "Malmö Jönköping", ReplaceLast("Malmö Jönköping", "", "yyy"))
+	assert.Equal(t, "我是yyy国人", ReplaceLast("我是中国人", "中", "yyy"))
+	assert.Equal(t, "我是中国人", ReplaceLast("我是中国人", "", "yyy"))
+}
+
+func TestSSS(t *testing.T) {
+	tests := []struct {
+		name string
+		args string
+		want string
+	}{
+		{"", "FiresGOComponent", "fires_g_o_component"},
+		{"", "FiresGoComponent", "fires_go_component"},
+		{"", "FiresGoComponent", "fires_go_component"},
+		{"", "Fires Go Component", "fires_go_component"},
+		{"", "Fires    Go      Component   ", "fires_go_component"},
+		{"", "FiresGoComponent", "fires__go__component"},
+		{"", "FiresGoComponent_", "fires_go_component_"},
+		{"", "fires go Component", "fires_go_component"},
+		{"", "fires go MoreComponent", "fires_go_more_component"},
+		{"", "foo-bar", "foo-bar"},
+		{"", "Foo-Bar", "foo-_bar"},
+		{"", "Foo_Bar", "foo__bar"},
+		{"", "ŻółtaŁódka", "żółtałódka"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := strings.Map(func(r rune) rune {
+				if unicode.IsSpace(r) || r == '-' || r == '_' {
+					return -1
+				}
+				if unicode.IsLower(r) {
+					return unicode.ToUpper(r)
+				}
+				return r
+			}, tt.args); got != tt.want {
+				t.Errorf("Snake(%v) = %v, want %v", tt.args, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestLowerFirst(t *testing.T) {
+	assert.Equal(t, "foo", LowerFirst("Foo"))
+	assert.Equal(t, "foo", LowerFirst("foo"))
+	assert.Equal(t, "f", LowerFirst("F"))
+	assert.Equal(t, "", LowerFirst(""))
+	assert.Equal(t, "1", LowerFirst("1"))
+	assert.Equal(t, "中国", LowerFirst("中国"))
+	assert.Equal(t, "żółtałódka", LowerFirst("żółtałódka"))
 }

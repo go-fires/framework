@@ -99,6 +99,6 @@ func TestString_Trim(t *testing.T) {
 }
 
 func TestString_IsUuid(t *testing.T) {
-	assert.True(t, String("b2c6b2d0-0dc2-11e8-8eb2-f2801f1b9fd1").IsUuid())
-	assert.False(t, String("b2c6b2d0-0dc2-11e8-8eb2-f2801f1b9fd").IsUuid())
+	assert.True(t, String("b2c6b2d0-0dc2-11e8-8eb2-f2801f1b9fd1").IsUUID())
+	assert.False(t, String("b2c6b2d0-0dc2-11e8-8eb2-f2801f1b9fd").IsUUID())
 }
